@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+  ServerName "{{ servername }}
+
+  ProxyPreserveHost On
+
+  ProxyPass / http://target
+  ProxyPassReverse / http://target
+
+</VirtualHost>

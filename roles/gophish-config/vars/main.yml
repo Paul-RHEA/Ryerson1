@@ -1,0 +1,41 @@
+---
+# vars file for modoboa-config
+
+gophishItems:
+  -
+    name: Sending_Profiles
+    httpKey: smtp
+    filename: sendingProfiles.json
+  -
+    name: Landing_Pages
+    httpKey: pages
+    filename: landingPages.json
+  -
+    name: Email_templates
+    httpKey: templates
+    filename: emailTemplates.json
+  -
+    name: Campaigns
+    httpKey: campaigns
+    filename: campaigns.json
+
+  -
+    name: Users And Groups
+    httpKey: groups
+    filename: groups.json
+
+testCamp:
+  name: Test2345
+  template:
+    name: Test
+  url: http://gophish.com
+  page:
+    name: IT3(Phish)
+  smtp:
+    name: cdays2019@cncs.gov.pt
+  send_by_date: null
+  groups:
+    -
+      name: kernelcars
+  ignore_cert_errors: true
+#  "ignore_cert_errors": true

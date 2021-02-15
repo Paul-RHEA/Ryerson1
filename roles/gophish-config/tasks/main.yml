@@ -1,0 +1,56 @@
+---
+  
+- name: Wait host to come up
+  wait_for_connection:
+    timeout:  36000 # 10 hours
+    sleep: 5
+
+- name: Prepare ansible controller
+  include_tasks: prepare-ansible-controller.yml
+
+- name: Wait for the Server/API to come online
+  uri:
+    url: "{{ srv_url }}"
+    validate_certs: no
+  register: _result
+  until: _result.status == 200
+  retries: 7200 # 720 * 5 seconds = 1hour * 10 = 10hours (60*60/5)
+  delay: 5 # every 5sec
+
+- debug:
+    msg: "ready"
+
+- name: getAPIkey
+  getApiKey:
+    srvIP: "{{ gophish_srv_ip }}"
+    srvPort: "{{ gophish_srv_port }}"
+    username: "{{ gophish_admin_username }}"
+    password: "{{ gophish_admin_password }}"
+  register: retApiKey
+
+- name: Print API key
+  debug:
+    var: retApiKey.apiKey
+
+- name: Set api_token variable
+  set_fact:
+    api_token: "{{ retApiKey.apiKey }}"
+
+- name: backup configuration
+  include_tasks: backup-configuration.yml
+  when: configAction == 'backup'
+
+- name: Clean configuration
+  include_tasks: clean.yml
+  when: configAction == 'clean' or configAction == 'configure'
+
+- name: Load data
+  include_tasks: load-configuration.yml
+  when: configAction == 'add' or configAction == 'configure'
+
+- name: Launch Campaigns
+  include_tasks: launch-campaigns.yml
+  when: configAction == 'configure_and_launch' or configAction == 'launch'
+
+- name: cleanup
+  include_tasks: clean-ansible-controller.yml

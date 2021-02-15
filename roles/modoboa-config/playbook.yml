@@ -1,0 +1,21 @@
+---
+- name: Configure Modoboa
+  hosts: localhost
+  become: yes
+  become_user: root
+  vars_files:
+      /etc/ansible/host_vars/vault_vars.yml
+  vars:
+    ansible_become_pass: '{{ become_p }}'
+  tasks:
+    - include_role:
+        name: modoboa-config
+      vars:
+        #mail_srv_ip: 10.253.0.82
+        api_token: '329d1d9c311debe9f781aa4e6765b431f7abc30c'
+        configAction: 'configure'
+        #configFile: 'emailData.json'
+        mail_srv_ip: '10.255.0.6'
+        domainsAndAccounts: "{{ hostvars.dns.configuration.domainsAndAccounts }}"
+
+        main_domain: 'citef.int'

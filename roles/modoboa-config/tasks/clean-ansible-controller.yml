@@ -1,0 +1,7 @@
+---
+
+- name: Remove modoboa hosts entry
+  lineinfile:
+    path: /etc/hosts
+    state: absent
+    line: '{{ mail_srv_ip }}    mail.citef.int'

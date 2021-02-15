@@ -1,0 +1,14 @@
+- name: Get "{{ itemName }}"
+  uri:
+    url: "{{ api_url_base }}/{{ itemHttpKey }}" #?api_key={{ api_token }}"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    status_code: 200
+    validate_certs: no
+  register: res
+
+
+#- name: Print "{{ itemName }}"
+#  debug:
+#    var: res

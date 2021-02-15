@@ -1,0 +1,27 @@
+---
+
+- name: Get "{{ itemName }}"
+  uri:
+    url: "{{ api_url_base }}/{{ itemHttpKey }}?api_key={{ api_token }}"
+    method: GET
+    status_code: 200
+    validate_certs: no
+  register: res
+
+
+- name: Print
+  debug:
+    msg: "{{ item.id}}"
+  loop: "{{ res.json }}"
+
+- name: Delete all "{{ itemName }}"
+  uri:
+    url: "{{ api_url_base }}/{{ itemHttpKey }}/{{ lItem.id }}?api_key={{ api_token }}"
+    method: DELETE
+    body_format: json
+    status_code: 200
+    validate_certs: no
+    follow_redirects: all
+  loop: "{{ res['json'] }}"
+  loop_control:
+    loop_var: lItem

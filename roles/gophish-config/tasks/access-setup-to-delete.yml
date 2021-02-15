@@ -1,0 +1,30 @@
+---
+
+#- name: Get a list of Domains
+#  uri:
+#    url: "{{ api_url_base }}domains/"
+#    method: GET
+#    status_code: 200
+#    headers:
+#      Authorization: "Token {{ api_token }}"
+#    validate_certs: no
+#  register: _domains
+#  tags: get_domains, del_domains, clean
+
+#- debug:
+#    msg: "{{ item.name }}"
+#  with_items: "{{ _domains['json'] }}"
+#  tags: get_domains, clean
+
+#- name: delete all domains
+#  uri:
+#    url: "{{ api_url_base }}domains/{{ item.pk }}"
+#    method: DELETE
+#    body_format: json
+#    status_code: 204
+#    headers:
+#      Authorization: "Token {{ api_token }}"
+#    validate_certs: no
+#    follow_redirects: all
+#  with_items: "{{ _domains['json'] }}"
+#  tags: del_domains, clean

@@ -1,0 +1,42 @@
+---
+- name: Campaigns from vars json file
+  set_fact:
+    campaigns: "{{lookup('file', campaingsFile)|from_json }}"
+
+
+- name: Print Campaigns to be loaded (names only)
+  debug:
+    var: "{{ item.name }}"
+  loop: "{{ campaigns }}"
+
+- name: Delete all campaigns
+  include_tasks: delete-all.yml
+  vars:
+    itemName: "Campaigns"
+    itemHttpKey: "campaigns"
+
+- name: Launch Campaigns
+  uri:
+    url: "{{ api_url_base }}campaigns/"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    body_format: json
+    body: "{{ item }}"
+    validate_certs: no
+    status_code: 201
+  loop: "{{ campaigns }}"
+  when: randomSelection == false
+
+- name: Launch Campaigns randomly
+  uri:
+    url: "{{ api_url_base }}campaigns/"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    body_format: json
+    body: "{{ item }}"
+    validate_certs: no
+    status_code: 201
+  loop: "{{ campaigns | shuffle }}"
+  when: randomSelection == true

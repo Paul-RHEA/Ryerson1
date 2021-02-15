@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Link to Webmail
+Type=Link
+URL=https://mail.citef.int/
+Icon=/usr/share/icons/Humanity/actions/24/mail-read.svg
+#Icon=/usr/share/icons/hicolor/scalable/categories/applications-email-panel.svg
+Name[en_US]=Webmail

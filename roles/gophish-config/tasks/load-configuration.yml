@@ -1,0 +1,227 @@
+---
+
+######################## Sending Profiles ######################################
+- name: Read Sending Profiles from vars file
+  set_fact:
+    sProf: "{{lookup('file', sProfFile)|from_json }}"
+
+- name: Sending Profiles file to be loaded
+  debug:
+    var: sProf
+
+- name: Print Sending Profiles to be loaded (existing ones will be skipped)
+  debug:
+    msg: "{{ item.name }}"
+  loop: "{{ sProf }}"
+
+- name: Print api_token
+  debug:
+    var: api_token
+
+- name: Get existing sendingProfiles
+  uri:
+    url: "{{ api_url_base }}smtp?api_key={{ api_token }}" #smtp/"
+    method: GET
+    status_code: 200
+    validate_certs: no
+  register: curSProf
+
+#- debug:
+#    msg: "{{ item.id }}"
+#  with_items: "{{ curSProf.json }}"
+
+- name: Create list of active domains
+  set_fact:
+    activeSProfsNames: "{{ curSProf.json | map(attribute='name') | list }}"
+
+- name: Active Sending Profiles
+  debug:
+    var: activeSProfsNames
+
+- name: add sendingProfiles
+  uri:
+    url: "{{ api_url_base }}smtp/"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    body_format: json
+    body: {
+        "name": "{{ item.name }}",
+        "interface_type": "SMTP",
+        "from_address": "{{ item.from_address }}",
+        "host": "{{ item.host }}",
+        "username": "{{ item.username }}",
+        "password": "{{ item.password }}",
+        "headers": "{{ item.headers }}",
+        "ignore_cert_errors": true
+          }
+    validate_certs: no
+    status_code: 201
+  loop: "{{ sProf }}"
+  when: item.name not in activeSProfsNames
+
+
+######################## Email Templates ######################################
+- name: Read Email Templates from vars file
+  set_fact:
+    eTempl: "{{lookup('file', eTemplFile)|from_json }}"
+
+#- name: Email Templates file to be loaded
+#  debug:
+#    var: eTempl
+
+#- name: Print Email Templates to be loaded (existing ones will be skipped)
+#  debug:
+#    msg: "{{ item.id }} : {{ item.name }}"
+#  loop: "{{ eTempl }}"
+
+- name: Get existing Email Templates
+  uri:
+    url: "{{ api_url_base }}templates/"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    status_code: 200
+    validate_certs: no
+  register: curETempl
+
+#- debug:
+#    msg: "{{ item.id }}"
+#  with_items: "{{ curETempl.json }}"
+
+- name: Create list of current template names
+  set_fact:
+    activeETampleNames: "{{ curETempl.json | map(attribute='name') | list }}"
+
+#- name: Active Email Templates
+#  debug:
+#    var: activeETampleNames
+
+- name: add Email Templates
+  uri:
+    url: "{{ api_url_base }}templates/"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    body_format: json
+    body: {
+        "name": "{{ item.name }}",
+        "subject": "{{ item.subject }}",
+        "text": "{{ item.text }}",
+        "html": "{{ item.html }}",
+        "attachments": "{{ item.attachments }}",
+        "ignore_cert_errors": true
+          }
+    validate_certs: no
+    status_code: 201
+  loop: "{{ eTempl }}"
+  when: item.name not in activeETampleNames
+
+########################## Landing Pages ######################################
+- name: Landing Pages  from vars file
+  set_fact:
+    lPages: "{{lookup('file', lPagesFile)|from_json }}"
+
+- name: Landing Pages file to be loaded
+  debug:
+    var: lPages
+
+- name: Print Landing Pages to be loaded (existing ones will be skipped)
+  debug:
+    msg: "{{ item.id }} : {{ item.name }}"
+  loop: "{{ lPages }}"
+
+- name: Get existin Landing Pages
+  uri:
+    url: "{{ api_url_base }}pages/"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    status_code: 200
+    validate_certs: no
+  register: curLPages
+
+- debug:
+    msg: "{{ item.id }}"
+  with_items: "{{ curLPages.json }}"
+
+- name: Create list of current Landing Pages names
+  set_fact:
+    activeLPagesNames: "{{ curLPages.json | map(attribute='name') | list }}"
+
+- name: Active Landing Pages
+  debug:
+    var: activeLPagesNames
+
+- name: add Landing Pages
+  uri:
+    url: "{{ api_url_base }}pages/"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    body_format: json
+    body: {
+        "name": "{{ item.name }}",
+        "html": "{{ item.html }}",
+        "capture_credentials": "{{ item.capture_credentials }}",
+        "capture_passwords": "{{ item.capture_passwords }}",
+        "redirect_url": "{{ item.redirect_url }}",
+        "ignore_cert_errors": true
+          }
+    validate_certs: no
+    status_code: 201
+  loop: "{{ lPages }}"
+  when: item.name not in activeLPagesNames
+
+##############################  Groups  #######################################
+- name: Groups from vars file
+  set_fact:
+    usersAndGroups: "{{lookup('file', groupsFile)|from_json }}"
+
+- name: Groups file to be loaded
+  debug:
+    var: usersAndGroups
+
+- name: Print Groups to be loaded (existing ones will be skipped)
+  debug:
+    msg: "{{ item.name }}"
+  loop: "{{ usersAndGroups }}"
+
+- name: Get existin Groups
+  uri:
+    url: "{{ api_url_base }}groups/"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    status_code: 200
+    validate_certs: no
+  register: curGroups
+
+- debug:
+    msg: "{{ item.id }}"
+  with_items: "{{ curGroups.json }}"
+
+- name: Create list of current Groups names
+  set_fact:
+    activeGroupsNames: "{{ curGroups.json | map(attribute='name') | list }}"
+
+- name: Active Groups
+  debug:
+    var: activeGroupsNames
+
+- name: add Groups
+  uri:
+    url: "{{ api_url_base }}groups/"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+    body_format: json
+    body: {
+        "name": "{{ item.name }}",
+        "targets": "{{ item.targets }}",
+        "ignore_cert_errors": true
+          }
+    validate_certs: no
+    status_code: 201
+  loop: "{{ usersAndGroups }}"
+  when: item.name not in activeGroupsNames

@@ -1,0 +1,7 @@
+---
+
+- name: Add modoboa hosts entry
+  lineinfile:
+    path: /etc/hosts
+    state: present
+    line: '{{ mail_srv_ip }}    mail.citef.int'

@@ -1,0 +1,59 @@
+---
+
+- name: Wait host to come up
+  wait_for_connection:
+    timeout:  36000 # 10 hours
+    sleep: 5
+- name: Gather facts
+  setup:
+- name: Create dir "/etc/ssl/certs/"if needed
+  file:
+    path: "/etc/ssl/certs/"
+    state: directory
+- name: Create dir "/etc/ssl/certs/private" if needed
+  file:
+    path: "/etc/ssl/certs/private"
+    state: directory
+- name: copy ssl certificates
+  copy:
+    src: "mail.citef.int/CITEF_EMAIL_SRV.crt"
+    dest: "/etc/ssl/certs/CITEF_EMAIL_SRV.crt"
+    owner: "root"
+    group: "root"
+- name: copy private key
+  copy:
+    src: "mail.citef.int/CITEF_EMAIL_SRV.key"
+    dest: "/etc/ssl/private/CITEF_EMAIL_SRV.key"
+    owner: "root"
+    group: "root"
+- name: Change config cert line
+  lineinfile:
+    path: /etc/nginx/sites-enabled/mail.citef.int.conf
+    regexp: '^    ssl_certificate /etc/ssl/'
+    line: '    ssl_certificate /etc/ssl/certs/CITEF_EMAIL_SRV.crt;'
+- name: Change config private key line
+  lineinfile:
+    path: /etc/nginx/sites-enabled/mail.citef.int.conf
+    regexp: '^    ssl_certificate_key'
+    line: '    ssl_certificate_key /etc/ssl/private/CITEF_EMAIL_SRV.key;'
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+###### configure ssl for Dovecot (IMAP)
+- name: change Dovecot config cert line
+  lineinfile:
+    path: /etc/dovecot/conf.d/10-ssl.conf
+    regexp: '^ssl_cert'
+    line: 'ssl_cert = </etc/ssl/certs/CITEF_EMAIL_SRV.crt'
+- name: Change config private key line
+  lineinfile:
+    path: /etc/dovecot/conf.d/10-ssl.conf
+    regexp: '^ssl_key'
+    line: 'ssl_key = </etc/ssl/private/CITEF_EMAIL_SRV.key'
+- name: Restart dovecot
+  service:
+    name: dovecot
+    state: restarted
+- name: Restart Machine
+  reboot:

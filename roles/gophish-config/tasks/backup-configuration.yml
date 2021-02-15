@@ -1,0 +1,10 @@
+---
+
+- name: Get all Gophish items
+  include_tasks: store-data.yml
+  vars:
+    itemName: "{{ item.name }}"
+    itemHttpKey: "{{ item.httpKey }}"
+    destPath: "{{ backupPath }}"
+    itemFilename: "{{ item.filename }}"
+  loop: "{{ gophishItems }}"

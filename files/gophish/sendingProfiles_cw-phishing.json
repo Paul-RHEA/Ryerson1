@@ -1,0 +1,181 @@
+[
+  {
+    "username": "cdays2019@cncs.gov.pt",
+    "ignore_cert_errors": true,
+    "name": "cdays2019@cncs.gov.pt",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Cdays1234",
+    "from_address": "\"C-DAYS2019\"<cdays2019@cncs.gov.pt>"
+  },
+  {
+    "username": "replies@oracle-mail.com",
+    "ignore_cert_errors": true,
+    "name": "replies@oracle-mail.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Replies12",
+    "from_address": "replies@oracle-mail.com"
+  },
+  {
+    "username": "no-reply@oracle.com",
+    "ignore_cert_errors": true,
+    "name": "no-reply@oracle.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Oracle12",
+    "from_address": "\"SUPPORT ORACLE\"<no-reply@oracle.com>"
+  },
+  {
+    "username": "kernelcars@service-now.com",
+    "ignore_cert_errors": true,
+    "name": "kernelcars@service-now.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Kernel12",
+    "from_address": "\"SERVICE-NOW KERNELCARS\"<kernelcars@service-now.com>"
+  },
+  {
+    "username": "elearning@training-kernelcars.com",
+    "ignore_cert_errors": true,
+    "name": "elearning@training-kernelcars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Support12",
+    "from_address": "\"elearning@training.kernelcars.com\"<elearning@training-kernelcars.com>"
+  },
+  {
+    "username": "communication@kernel-cars.com",
+    "ignore_cert_errors": true,
+    "name": "communication@kernel-cars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Commun123",
+    "from_address": "\"communication@kernel-cars.com\"<communication@kernel-cars.com>"
+  },
+  {
+    "username": "ot@kernel-cars.com",
+    "ignore_cert_errors": true,
+    "name": "ot@kernel-cars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Security12",
+    "from_address": "\"OT KERNELCARS\"<ot@kernel-cars.com>"
+  },
+  {
+    "username": "iam@kernelcars.com",
+    "ignore_cert_errors": true,
+    "name": "iam@kernelcars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Iam12345",
+    "from_address": "\"IAM KERNELSCARS\"<iam@kernelcars.com>"
+  },
+  {
+    "username": "clayton.fox@kernelcars.com",
+    "ignore_cert_errors": true,
+    "name": "clayton.fox@kernelcars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Clayton34",
+    "from_address": "Clayton Fox <clayton.fox@kernelcars.com>"
+  },
+  {
+    "username": "ot@kernelcars.com",
+    "ignore_cert_errors": true,
+    "name": "ot@kernelcars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Socot123",
+    "from_address": "OT KERNELCARS<ot@kernelcars.com>"
+  },
+  {
+    "username": "cso@kernelcars.com",
+    "ignore_cert_errors": true,
+    "name": "cso@kernelcars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Security12",
+    "from_address": "CSO KERNELCARS <cso@kernelcars.com>"
+  },
+  {
+    "username": "iam@kernel.cars.com",
+    "ignore_cert_errors": true,
+    "name": "iam@kernel.cars.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Kerneliam1",
+    "from_address": "IAM KERNELCARS <iam@kernel.cars.com>"
+  },
+  {
+    "username": "no_reply26646-delivery26646@office.365.com",
+    "ignore_cert_errors": true,
+    "name": "no_reply26646-delivery26646@office.365.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Noreply23",
+    "from_address": "\"Mail_Delivery_alert\"<no_reply26646-delivery26646@office.365.com>"
+  },
+  {
+    "username": "Haris.Burns@plc-support.siemen.com",
+    "name": "Haris.Burns@plc-support.siemen.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Haris1234",
+    "from_address": "\"Haris Burns@ SIEMENS\" <Haris.Burns@plc-support.siemen.com>"
+  },
+  {
+    "username": "no-reply@cloudmisecurity.com",
+    "ignore_cert_errors": true,
+    "name": "no-reply@cloudmisecurity.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Cloud1234",
+    "from_address": "Microsoft Cloud App Security <no-reply@cloudmisecurity.com>"
+  },
+  {
+    "username": "premium@academia.edu",
+    "ignore_cert_errors": true,
+    "name": "premium@academia.edu",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Premium12",
+    "from_address": "premium@academia.edu"
+  },
+  {
+    "username": "noreply@email.teams.microsoft.com",
+    "ignore_cert_errors": true,
+    "name": "noreply@email.teams.microsoft.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Noreply12",
+    "from_address": "Microsoft Teams <noreply@email.teams.microsoft.com>"
+  },
+  {
+    "username": "no-reply@office.365.com",
+    "ignore_cert_errors": true,
+    "name": "no-reply@office.365.com",
+    "interface_type": "SMTP",
+    "headers": [],
+    "host": "mail.citef.int:25",
+    "password": "Noreply12",
+    "from_address": "\"no-reply@office.365.com\"<no-reply@office.365.com>"
+  }
+]

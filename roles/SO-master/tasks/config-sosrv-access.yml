@@ -1,0 +1,10 @@
+- name: allow SOC room to access SO tools (so-allow -> analyst)
+  ufw:
+    rule: allow
+    src: 100.10.30.0/24
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - '22'
+    - '443'
+    - '7734'

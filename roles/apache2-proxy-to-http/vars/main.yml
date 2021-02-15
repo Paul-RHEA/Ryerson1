@@ -1,0 +1,14 @@
+---
+# vars file for modoboa-config
+
+#ac:
+#  interface_type: "SMTP"
+#  name: "user1"
+#  host: "10.192.200.0.10:25"
+#  username: "username1"
+#  password: "password1"
+#  from_address: "User 1 <user1@citef.int>"
+#  ignore_cert_errors: true
+#  headers: []
+
+#smtpType: "SMTP"

@@ -1,0 +1,51 @@
+- name: copy SNORT rules
+  copy:
+    src: "files/{{ item }}"
+    dest: "/var/www/html/{{ item }}"
+    owner: "root"
+    group: "root"
+  loop:
+    - community-rules.tar.gz
+    - emerging.rules.tar.gz
+
+- name: Change pulldpork.conf - remove remote(online) rules' repos
+  replace:
+    path: /etc/nsm/pulledpork/pulledpork.conf
+    regexp: '^rule_url=https://'
+    replace: '#/1'
+
+- name: Change pulldpork.conf - add url to local web srv
+  lineinfile:
+    path: /etc/nsm/pulledpork/pulledpork.conf
+    line: "{{ item }}"
+  loop:
+    - 'rule_url=http://127.0.0.1/|community-rules.tar.gz|1234567'
+    - 'rule_url=http://127.0.0.1/|emerging.rules.tar.gz|1234567'
+
+- name: Make sure LOCAL_NIDS_RULE_TUNING is disabled
+  lineinfile:
+    path: /etc/nsm/securityonion.conf
+    regexp: '^LOCAL_NIDS_RULE_TUNING='
+    line: 'LOCAL_NIDS_RULE_TUNING=no'
+
+- name: Add port 80 to apache
+  lineinfile:
+    path: /etc/apache2/ports.conf
+    regexp: '^Listen'
+    line: 'Listen 80'
+
+- name: Delete index.html
+  file:
+    path: /var/www/html/index.html
+    state: absent
+
+- name: Enable default site
+  shell: a2ensite 000-default.conf
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted
+
+- name: Update NIDS rules
+  shell: rule-update

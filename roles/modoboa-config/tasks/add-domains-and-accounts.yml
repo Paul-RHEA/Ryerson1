@@ -1,0 +1,120 @@
+---
+
+#- include_vars:
+#    file: "{{ configFile }}"
+#    name: emailData
+#  tags: add_accounts
+
+- name: Domains to be configured
+  debug:
+    var: emailConfig['domains']
+  tags: debug
+
+- name: Get a list of the existing Domains
+  uri:
+    url: "{{ api_url_base }}domains/"
+    method: GET
+    status_code: 200
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+  register: _domains
+  tags: get_domains
+
+- debug:
+    msg: "{{ item.name }}"
+  with_items: "{{ _domains.json }}"
+  tags: debug, get_domains
+
+- name: Create list of active domains
+  set_fact:
+    activeDomains: "{{ _domains.json | map(attribute='name') | list }}"
+  tags: var
+
+- name: Active domains
+  debug:
+    var: activeDomains
+  tags: var
+
+- name: add domains
+  uri:
+    url: "{{ api_url_base }}domains/"
+    method: POST
+    status_code: 201
+    body_format: json
+    body: "{
+            'name': '{{ item }}',
+            'enabled': true
+            }"
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+  with_items: "{{ emailConfig['domains'] }}"
+  when: "item not in activeDomains"
+  register: _result
+  tags: add_domain
+
+- name: Added domains
+  debug:
+    var: _result
+  tags: add_domains, debug
+
+- name: Get a list of accounts
+  uri:
+    url: "{{ api_url_base }}accounts/"
+    method: GET
+    status_code: 200
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+  register: _accounts
+  tags: get_accounts, del_accounts, clean
+
+- name: List of existing accounts
+  debug:
+    msg: "{{ item['username'] }}"
+  with_items: "{{ _accounts['json'] }}"
+  when: "item.username != 'env-admin'"
+  tags: get_accounts, clean, debug
+
+- name: Create list of active accounts
+  set_fact:
+    activeAccounts: "{{ _accounts.json | map(attribute='username') | list }}"
+  tags: var
+
+- name: Active accounts
+  debug:
+    var: activeAccounts
+  tags: var
+
+- name: Accounts to be added
+  debug:
+    var: emailConfig['accounts']
+
+- name: add accounts
+  uri:
+    url: "{{ api_url_base }}accounts/"
+    method: POST
+    status_code: 201
+    body_format: json
+    body: "{
+        \"username\": \"{{ item['username'] }}@{{ item['domain'] }}\",
+        \"first_name\": \"{{ item['first_name'] }}\",
+        \"last_name\": \"{{ item['last_name'] }}\",
+        \"is_active\": True,
+        \"mailbox\": {
+              \"full_address\": \"{{ item['username'] }}@{{ item['domain'] }}\",
+              \"use_domain_quota\": True,
+              \"quota\": \"0\"
+                    },
+            \"role\": \"{{ item['role'] }}\",
+        \"language\": \"en\",
+        \"password\": \"{{ item['password'] }}\"
+          }"
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+  with_items: "{{ emailConfig['accounts'] }}"
+  when: item.username+'@'+item.domain not in activeAccounts
+#  register: _result
+  tags: add_accounts
