@@ -1,0 +1,27 @@
+---
+
+- name: copy ssl certificate
+  copy:
+    src: "files/certs/{{ item }}"
+    dest: "/usr/local/share/ca-certificates/{{ item }}"
+    owner: "root"
+    group: "root"
+  loop:
+    - CITEF_ROOT_CA.crt
+    - CITEF_INTERIM_CA.crt
+- name: copy ssl certificate2
+  copy:
+    src: "files/certs/{{ item }}"
+    dest: "/usr/share/ca-certificates/{{ item }}"
+    owner: "root"
+    group: "root"
+  loop:
+    - CITEF_ROOT_CA.crt
+    - CITEF_INTERIM_CA.crt
+- name: update CAs
+  shell: update-ca-certificates
+- name: Restart Gophish
+  service:
+    name: gophish
+    state: restarted
+  when: ansible_hostname == 'GOPHISH'

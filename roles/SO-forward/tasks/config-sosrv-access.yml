@@ -1,0 +1,32 @@
+- name: allow Enterprise LAN syslog sources to send data (so-allow -> Syslog device)
+  ufw:
+    rule: allow
+    src: "{{ item[1] }}"
+    port: '514'
+    proto: "{{ item[0] }}"
+  with_nested:
+    - ['tcp', 'udp']
+    - ['100.10.10.2','100.10.10.3','100.10.10.4','100.10.10.5']
+  when: ansible_hostname == 'SO_FW_LAN'
+
+- name: allow SCADA LAN syslog sources to send data (so-allow -> Syslog device)
+  ufw:
+    rule: allow
+    src: "{{ item[1] }}"
+    port: '514'
+    proto: "{{ item[0] }}"
+  with_nested:
+    - ['tcp', 'udp']
+    - ['10.10.10.3','10.10.10.4']
+  when: ansible_hostname == 'SO_FW_SCADA'
+
+- name: allow DMZ syslog sources to send data (so-allow -> Syslog device)
+  ufw:
+    rule: allow
+    src: "{{ item[1] }}"
+    port: '514'
+    proto: "{{ item[0] }}"
+  with_nested:
+    - ['tcp', 'udp']
+    - ['100.10.20.2']
+  when: ansible_hostname == 'SO_FW_DMZ'

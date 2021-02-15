@@ -1,0 +1,13 @@
+#mail_srv_ip: ''
+
+mail_srv_url: ''
+api_url_base: ''
+
+activeDomains: ''
+activeAccounts: ''
+configAction: 'configure'
+domains: ''
+accounts: ''
+emailConfig: ''
+#scenarioFile: '/mnt/cdrom/*.json'
+#scenarioJsonFile: ''

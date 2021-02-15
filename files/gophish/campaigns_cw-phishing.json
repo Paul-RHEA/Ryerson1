@@ -1,0 +1,182 @@
+[
+  {
+    "name": "IT1_PHISHING",
+    "template": {"name": "it1_phish_em"},
+    "page": {"name": "it1-phish-land"},
+    "url": "http://office.365.com/login",
+    "smtp": {"name": "no_reply26646-delivery26646@office.365.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "IT2_PHISHING",
+    "template": {"name": "it2_phish_em"},
+    "page": {"name": "it2-phish-land"},
+    "url": "https://www.office.365.com/login",
+    "smtp": {"name": "no-reply@office.365.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "IT3_PHISHING",
+    "template": {"name": "it3_phish_em"},
+    "page": {"name": "it3-phish-land"},
+    "url": "http://gophish/",
+    "smtp": {"name": "clayton.fox@kernelcars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "IT4_PHISHING",
+    "template": {"name": "it4_phish_em"},
+    "page": {"name": "it4-phish-land"},
+    "url": "http://www.training-kernelcars.com/courses",
+    "smtp": {"name": "elearning@training-kernelcars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT1_PHISHING",
+    "template": {"name": "ot1_phish_em"},
+    "page": {"name": "ot1-phish-land"},
+    "url": "http://www.kernel-cars.com/cyber-training",
+    "smtp": {"name": "communication@kernel-cars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT2_PHISHING",
+    "template": {"name": "ot2_phish_em"},
+    "page": {"name": "ot2-phish-land"},
+    "url": "https://motor.scada.kernel-cars.com/password-update",
+    "smtp": {"name": "ot@kernel-cars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT4_PHISHING",
+    "template": {"name": "ot4_phish_em"},
+    "page": {"name": "ot4-phish-land"},
+    "url": "http://iam.kernel.cars.com/change-password",
+    "smtp": {"name": "iam@kernel.cars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT5_PHISHING",
+    "template": {"name": "ot5_phish_em"},
+    "page": {"name": "ot5-phish-land"},
+    "url": "https://support.cloudmisecurity.com/en-us/microsoft-account-change-your-password",
+    "smtp": {"name": "no-reply@cloudmisecurity.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "IT1_LEGITIMATE",
+    "template": {"name": "it1_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://c-days.cncs.gov.pt/en/",
+    "smtp": {"name": "cdays2019@cncs.gov.pt"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "IT2_LEGITIMATE",
+    "template": {"name": "it2_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://www.oracle.com/Oracle-Developer-Meetup-Porto/events/",
+    "smtp": {"name": "no-reply@oracle.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "IT3_LEGITIMATE",
+    "template": {"name": "it3_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://academia.edu/preview-services/",
+    "smtp": {"name": "premium@academia.edu"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "IT4_LEGITIMATE",
+    "template": {"name": "it4_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://teams.microsoft.com/o365/kernelcars/",
+    "smtp": {"name": "noreply@email.teams.microsoft.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT1_LEGITIMATE",
+    "template": {"name": "ot1_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "http://scada.intranet.kernelcars.com/change-password/",
+    "smtp": {"name": "ot@kernelcars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT2_LEGITIMATE",
+    "template": {"name": "ot2_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://iam.kernelcars.com/change-password/",
+    "smtp": {"name": "iam@kernelcars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT3_LEGITIMATE",
+    "template": {"name": "ot3_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://scada.kernelcars.com/change-password/",
+    "smtp": {"name": "cso@kernelcars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT4_LEGITIMATE",
+    "template": {"name": "ot4_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://service-now.com/kernelcars/articles/",
+    "smtp": {"name": "kernelcars@service-now.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT5_LEGITIMATE",
+    "template": {"name": "ot5_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "https://support.oracle.com/portal",
+    "smtp": {"name": "no-reply@oracle.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  },
+  {
+    "name": "OT6_LEGITIMATE",
+    "template": {"name": "ot6_leg_em"},
+    "page": {"name": "leg-land-dummy"},
+    "url": "http://gophish/",
+    "smtp": {"name": "ot@kernelcars.com"},
+    "send_by_date": null,
+    "groups": [{"name": "kernelcars"}],
+    "ignore_cert_errors": true
+  }
+]

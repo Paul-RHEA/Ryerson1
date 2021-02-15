@@ -1,0 +1,7 @@
+---
+
+# - sites_http:
+#     - servername: scada.kernelcars.com
+#       target: gophish
+#     - servername: kernel-cars.com
+#       target: gophish

@@ -1,0 +1,33 @@
+---
+- name: Configure Gophish
+  hosts: localhost
+  become: yes
+  become_user: root
+  vars_files:
+      /etc/ansible/host_vars/vault_vars.yml
+  vars:
+    ansible_become_pass: '{{ become_p }}'
+  tasks:
+    - include_role:
+        name: gophish-config
+      vars:
+        #mail_srv_ip: 10.253.0.82
+        gophish_admin_username: 'admin'
+        gophish_admin_password: 'gophish'
+        gophish_srv_ip: "10.255.0.6"
+        gophish_srv_port: "3333"
+        srv_url: 'https://gophish:3333'
+        api_url_base: 'https://gophish:3333/api'
+
+###### Params for configAction" add or configure
+#        configAction: 'add'
+#        configAction: 'configure'
+#        sProfFile: 'files/gophish/sendingProfiles_cw-phishing.json'
+#        eTemplFile: 'files/gophish/emailTemplates_cw-phishing.json'
+#        lPagesFile: 'files/gophish/landingPages_cw-phishing.json'
+#        groupsFile: 'files/gophish/groups_cw-phishing.json'
+#        campaingsFile: 'files/gophish/campaigns_cw-phishing.txt'
+
+###### Params for configAction" add or configure
+        configAction: 'backup'
+        backupPath: /tmp/

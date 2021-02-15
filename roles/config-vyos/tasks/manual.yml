@@ -1,0 +1,44 @@
+---
+
+  - name: Add default gateway
+    vyos_config:
+      lines:
+        - set protocols static route 0.0.0.0/0 next-hop 100.100.0.1
+  - name: Configure firewall
+    vyos_config:
+      lines:
+        - set firewall all-ping enable
+        - set firewall state-policy established action accept
+        - set firewall state-policy related action accept
+        - set firewall group port-group WEB port 80
+        - set firewall group port-group WEB port 443
+        - set firewall group network-group NET-INSIDE network 100.10.20.0/24
+        - set firewall group network-group NET-INSIDE network 100.10.10.0/24
+        - set firewall name ENT-IN default-action accept
+        - set firewall name PER-IN default-action drop
+        - set firewall name PER-IN rule 1000 description "Allow WEB to DMZ"
+        - set firewall name PER-IN rule 1000 source address 0.0.0.0/0
+        - set firewall name PER-IN rule 1000 destination address 100.10.20.0/24
+        - set firewall name PER-IN rule 1000 destination group port-group WEB
+        - set firewall name PER-IN rule 1000 protocol tcp
+        - set firewall name PER-IN rule 1000 action accept
+        - set firewall name PER-IN rule 1100 description "Allow ICMP"
+        - set firewall name PER-IN rule 1100 source address 0.0.0.0/0
+        - set firewall name PER-IN rule 1100 destination address 100.10.20.0/24
+        - set firewall name PER-IN rule 1100 protocol icmp
+        - set firewall name PER-IN rule 1100 action accept
+        - set firewall name PER-IN rule 2000 description "Allow mail to inside"
+        - set firewall name PER-IN rule 2000 source address 10.200.0.30
+        - set firewall name PER-IN rule 2000 destination group network-group NET-INSIDE
+        - set firewall name PER-IN rule 2000 destination port smtp
+        - set firewall name PER-IN rule 2000 protocol tcp
+        - set firewall name PER-IN rule 2000 action accept
+        - set firewall name DMZ-IN default-action drop
+        - set firewall name MGT-IN default-action accept
+  - name: Apply firewall rules to interfaces
+    vyos_config:
+      lines:
+        - set interfaces ethernet eth0 firewall in name ENT-IN
+        - set interfaces ethernet eth1 firewall in name DMZ-IN
+        - set interfaces ethernet eth2 firewall in name PER-IN
+        - set interfaces ethernet eth3 firewall in name MGT-IN

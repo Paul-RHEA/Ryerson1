@@ -1,0 +1,29 @@
+---
+
+- name: Configure DNS Srv
+  hosts: dns
+  become: yes
+  become_user: root
+  vars_files:
+      - /etc/ansible/host_vars/vault_vars.yml
+      - dns-setup-default.yml        # Contains the configuration
+  vars:
+    ansible_become_pass: '{{ become_p }}'
+  tasks:
+
+#    - name: Prereq 1
+#      include_role:
+#        - name: robertdebock.bootstrap
+
+#    - name: Prereq 1
+#      include_role:
+#        - name: robertdebock.core_dependencies
+
+    - name: DNS configuration
+      include_role:
+        name: robertdebock.dns
+      vars:
+        - gophish_ip: 10.10.10.10
+        - web_srv_ip: 10.10.10.20
+        - mail_srv_ip: 10.200.0.20
+        - dns_ip: 10.200.0.10

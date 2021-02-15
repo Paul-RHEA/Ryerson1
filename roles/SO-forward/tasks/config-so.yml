@@ -1,0 +1,64 @@
+---
+
+#produce the "interfaces" file by manually running SO setup and
+#then use it via this playbook for automatic setup
+- name: Configure interfaces
+  template:
+      src: files/interfaces
+      dest: /etc/network/interfaces
+      owner: root
+      group: root
+
+- name: Drop all networking config
+  command: ip addr flush dev {{ item }}
+  with_items:
+    - ens3
+    - ens4
+
+- name: restart network
+  service:
+    name: networking
+    state: restarted
+
+- name: Wait host to come up
+  wait_for_connection:
+    timeout: 60 # 1 min
+    sleep: 5
+
+# produce the sosrv.conf file by running the following command in SO
+# and answering the questions:
+#     sosetup -w sosrv.conf
+- name: Copy SO setup file
+  template:
+    src: files/sosetup-forward.conf
+    dest: /root/sosrv.conf
+    owner: root
+    group: root
+
+- name: create /root/.ssh
+  file:
+    path: /root/.ssh
+    state: directory
+    mode: '600'
+
+- name: Add SO Master to known hosts
+  template:
+    src: files/known_hosts
+    dest: /root/.ssh/known_hosts
+    owner: root
+    group: root
+
+- name: Add private key
+  copy:
+    src: files/id_rsa
+    dest: /root/.ssh/id_rsa
+    owner: root
+    group: root
+    mode: '600'
+
+- name: Change hostname
+  hostname:
+    name: '{{ inventory_hostname }}'
+
+- name: Run SO setup
+  shell: sosetup -f /root/sosrv.conf -y

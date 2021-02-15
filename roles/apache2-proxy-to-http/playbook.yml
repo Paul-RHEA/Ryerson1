@@ -1,0 +1,17 @@
+---
+- name: Install Snap
+  hosts: target
+  become: yes
+  become_user: root
+  vars_files:
+      /etc/ansible/host_vars/vault_vars.yml
+  vars:
+    ansible_become_pass: '{{ become_p }}'
+  tasks:
+    - include_role:
+        name: docker-config
+      vars:
+        snap_file: ............
+        snap_assert_file: ........
+        snap_image_path: /CitefAnsibleFiles/snaps/
+        dest_tmp_dir: /tmp/

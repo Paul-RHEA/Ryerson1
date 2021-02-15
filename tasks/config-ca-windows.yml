@@ -1,0 +1,20 @@
+---
+
+- name: copy ssl certificate
+  win_copy:
+    src: "files/certs/{{ item }}"
+    dest: C:\Temp\
+    owner: "root"
+  loop:
+    - CITEF_ROOT_CA.crt
+    - CITEF_INTERIM_CA.crt
+- name: Import ssl certificate
+  win_certificate_store:
+    path: "C:\\Temp\\{{ item }}"
+    file_type: 'pem'
+    key_exportable: 'no'
+    store_name: 'Root'
+    state: present
+  loop:
+    - CITEF_ROOT_CA.crt
+    - CITEF_INTERIM_CA.crt

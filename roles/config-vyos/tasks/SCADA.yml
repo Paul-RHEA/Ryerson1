@@ -1,0 +1,36 @@
+---
+
+- name: Config VyOS
+  VyOSConfig:
+    default_gw: 100.10.10.6
+    interfaces:
+      - id: 100
+        adapter: eth0
+        ip: 100.10.10.1
+        mask: 24
+        zone: LAN
+      - id: 101
+        adapter: eth1
+        ip: 10.10.10.1
+        mask: 24
+        zone: OT
+      - id: 102
+        adapter: eth2
+        ip: 10.255.0.42
+        mask: 30
+        zone: MGT
+    custom_rules:
+      - ruleset: LAN-OT
+        rule_num: 100
+        accept: True
+        src_ip: 100.10.10.2
+        dst_ip: 10.10.10.4
+        dst_port: 3389
+        dst_proto: tcp_udp
+      - ruleset: OT-LAN
+        rule_num: 100
+        accept: True
+        src_ip: 10.10.10.3
+        dst_ip: 100.10.30.2
+        dst_port: 514
+        dst_proto: tcp_udp

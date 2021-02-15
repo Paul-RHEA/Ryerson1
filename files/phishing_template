@@ -1,0 +1,33 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<p>Dear {{.FirstName}} {{.LastName}},</p>
+
+<p>&nbsp;</p>
+
+<p>The IT team recently updated the VPN of our organization. To allow you to continue using the kernelcars VPN after 10/15/2020, you need to update the VPN configuration on your workstation accordingly.</p>
+
+<p>To help you in this process, we attached to this email a tool to automate the update for you. You just need to run the exe.</p>
+
+<p>&nbsp;</p>
+
+<p>Should you encounter any issue, please contact us for additional support.</p>
+
+<p>&nbsp;</p>
+
+<p>Once the process is completed, please login again to your mailbox using this link to finalize the process:</p>
+
+<p><a href="{{.URL}}">https://mail.citef.int/{{.FirstName}}{{.LastName}}/finalizeVPNUpdate</a></p>
+
+<p>&nbsp;</p>
+
+<p>Best regards,</p>
+
+<p>The kernelcars IT Team</p>
+
+<p>{{.Tracker}}</p>
+</body>
+</html>
+

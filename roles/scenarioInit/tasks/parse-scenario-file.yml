@@ -1,0 +1,26 @@
+---
+
+- name: Retrieve scenario filename (json file)
+  find:
+    paths: /mnt/cdrom
+    patterns: '*.json'
+  register: scFile
+
+- name: Set scenario filename
+  set_fact:
+    scenarioFile: "{{ scFile.files.0.path }}"
+
+- name: Include variables from file
+  include_vars: "{{ scenarioFile }}"
+
+- name: add host entry to current (running) inventory
+  add_host:
+    name: "{{ item.configuration.name }}"
+    groups: "{{ item.configuration.groups }}"
+    ansible_host: "{{ item.nics | getMcnIP }}"
+    ansible_python_interpreter: /usr/bin/python3
+    vm: "{{ item }}"
+  with_items: "{{ virtualMachines }}"
+  when:
+    - "'name' in item.configuration"
+    - "'groups' in item.configuration"

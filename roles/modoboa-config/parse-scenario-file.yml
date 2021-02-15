@@ -1,0 +1,49 @@
+---
+- name: Parse scenario File
+  hosts: localhost
+  vars:
+    mail_srv_ip: 10.253.0.82
+    api_token: '329d1d9c311debe9f781aa4e6765b431f7abc30c'
+    configAction: 'configure'
+    configFile: 'emailData.json'
+    scenarioFile: 'd7d43d52modoboaansiblerole3.scenariolayout.json'
+  tasks:
+    - name: Include variables from file
+      include_vars: "{{ scenarioFile }}"
+
+    - name: load email config from scenario file
+      set_fact:
+        emailConfig: "{{ item.configuration.domainsAndAccounts | getEmailDomainsAndAccounts }}"
+      with_items: "{{ virtualMachines }}"
+      when:
+        - "'type' in item.configuration"
+        - item.configuration.type == 'EMAIL_SERVER'
+        - "'application' in item.configuration"
+        - item.configuration.application == 'Modoboa'
+
+    - name: Print emailConfig
+      debug:
+        var: emailConfig
+
+    - name: Get domains from emailconfig
+      debug:
+        msg: "{{ emailConfig.domains }}"
+
+
+    - name: Get accounts from emailconfig
+      debug:
+        msg: "{{ emailConfig.accounts }}"
+
+    - name: get Modoboa mcn IP
+      set_fact:
+        mail_srv_ip: "{{ item.nics | getMcnIP }}"
+      with_items: "{{ virtualMachines }}"
+      when:
+        - "'type' in item.configuration"
+        - item.configuration.type == 'EMAIL_SERVER'
+        - "'application' in item.configuration"
+        - item.configuration.application == 'Modoboa'
+
+    - name: get mcn IP
+      debug:
+        var: mail_srv_ip

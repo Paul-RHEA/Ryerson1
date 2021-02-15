@@ -1,0 +1,50 @@
+---
+- name: Retrieve scenario filename (json file)
+  find:
+    paths: /mnt/cdrom
+    patterns: '*.json'
+  register: scFile
+
+- debug:
+    var: scFile.files.0.path
+
+- name: Set scenario filename
+  set_fact:
+    scenarioFile: "{{ scFile.files.0.path }}"
+
+- name: Include variables from file
+  include_vars: "{{ scenarioFile }}"
+
+- debug:
+    var: scenarioFile
+
+- name: get mcn IP
+  set_fact:
+    gophish_srv_ip: "{{ item.nics | getMcnIP }}"
+  with_items: "{{ virtualMachines }}"
+  when:
+    - "'type' in item.configuration"
+    - item.configuration.type == 'PHISHING_PLATFORM'
+    - "'application' in item.configuration"
+    - item.configuration.application == 'Gophish'
+
+- name: get mcn IP2
+  set_fact:
+    gophish_srv_ip: "{{ item.nics | getMcnIP }}"
+  with_items: "{{ virtualMachines }}"
+  when:
+    - "'type' in item.configuration"
+    - item.configuration.type == 'DOCKER_PLATFORM'
+    - "'app_name' in item.configuration"
+    - item.configuration.app_name == 'Gophish'
+
+
+#- name: load email config from scenario file
+#  set_fact:
+#    emailConfig: "{{ item.configuration.domainsAndAccounts | getEmailDomainsAndAccounts }}"
+#  with_items: "{{ virtualMachines }}"
+#  when:
+#    - "'type' in item.configuration"
+#    - item.configuration.type == 'PHISHING_PLATFORM'
+#    - "'application' in item.configuration"
+#    - item.configuration.application == 'Gophish'

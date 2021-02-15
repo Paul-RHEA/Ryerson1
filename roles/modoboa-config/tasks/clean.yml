@@ -1,0 +1,61 @@
+---
+
+- name: Get a list of accounts
+  uri:
+    url: "{{ api_url_base }}accounts/"
+    method: GET
+    status_code: 200
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+  register: _accounts
+  tags: get_accounts, del_accounts, clean
+
+- debug:
+    msg: "{{ item['username'] }}"
+  with_items: "{{ _accounts['json'] }}"
+  when: "item.username != 'env-admin'"
+  tags: get_accounts, clean, debug
+
+- name: delete all accounts except env-admin
+  uri:
+    url: "{{ api_url_base }}accounts/{{ item.pk }}"
+    method: DELETE
+    body_format: json
+    status_code: 204
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+    follow_redirects: all
+  with_items: "{{ _accounts['json'] }}"
+  when: "item.username != 'env-admin'"
+  tags: del_accounts, clean
+
+- name: Get a list of Domains
+  uri:
+    url: "{{ api_url_base }}domains/"
+    method: GET
+    status_code: 200
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+  register: _domains
+  tags: get_domains, del_domains, clean
+
+- debug:
+    msg: "{{ item.name }}"
+  with_items: "{{ _domains['json'] }}"
+  tags: get_domains, clean
+
+- name: delete all domains
+  uri:
+    url: "{{ api_url_base }}domains/{{ item.pk }}"
+    method: DELETE
+    body_format: json
+    status_code: 204
+    headers:
+      Authorization: "Token {{ api_token }}"
+    validate_certs: no
+    follow_redirects: all
+  with_items: "{{ _domains['json'] }}"
+  tags: del_domains, clean

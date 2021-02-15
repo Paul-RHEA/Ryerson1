@@ -1,0 +1,46 @@
+---
+- name: Retrieve scenario filename (json file)
+  find:
+    paths: /mnt/cdrom
+    patterns: '*.json'
+  register: scFile
+
+- name: JSON files found
+  debug:
+    var: scFile
+
+#- name: copy scenario file
+#  copy:
+#    src:
+#    dest: files/
+
+- name: Set scenario filename
+  set_fact:
+    scenarioFile: "{{ scFile.files.0.path }}"
+
+- debug:
+    var: scenarioFile
+
+
+- name: Include variables from file
+  include_vars: "{{ scenarioFile }}"
+
+- name: load email config from scenario file
+  set_fact:
+    emailConfig: "{{ item.configuration.domainsAndAccounts | getEmailDomainsAndAccounts }}"
+  with_items: "{{ virtualMachines }}"
+  when:
+    - "'type' in item.configuration"
+    - item.configuration.type == 'EMAIL_SERVER'
+    - "'application' in item.configuration"
+    - item.configuration.application == 'Modoboa'
+
+- name: get Modoboa mcn IP
+  set_fact:
+    mail_srv_ip: "{{ item.nics | getMcnIP }}"
+  with_items: "{{ virtualMachines }}"
+  when:
+    - "'type' in item.configuration"
+    - item.configuration.type == 'EMAIL_SERVER'
+    - "'application' in item.configuration"
+    - item.configuration.application == 'Modoboa'

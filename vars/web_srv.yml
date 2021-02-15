@@ -1,0 +1,98 @@
+# Web srv config
+# - apache_listen_ip: "*"
+# - apache_listen_port: 80
+# - apache_listen_port_ssl: 443
+# - apache_create_vhosts: true
+# - apache_remove_default_vhost: false
+# - apache_state: started
+
+- sites_http:
+  - servername: "office.365.com"
+    target: gophish
+  - servername: "www.training-kernelcars.com"
+    target: gophish
+  - servername: "www.pic-support.siemen.com"
+    target: gophish
+  - servername: "iam.kernel.cars.com"
+    target: gophish
+  - servername: "scada.intranet.kernelcars.com"
+    target: gophish
+
+
+- sites_ssl:
+  - servername: "www.office.365.com"
+    target: gophish
+    certificate_file:  files/certs/365.com/WWW_OFFICE_365_COM.crt
+    certificate_file_dst:   /etc/ssl/certs/WWW_OFFICE_365_COM.crt
+    private_Key:  files/certs/365.com/WWW_OFFICE_365_COM.key
+    private_Key_dst:  /etc/ssl/certs/private/WWW_OFFICE_365_COM.key
+
+  - servername: "motor.scada.kernel-cars.com"
+    target: gophish
+    certificate_file:  files/certs/kernel-cars.com/MOTOR_SCADA_KERNEL-CARS_COM.crt
+    certificate_file_dst:   /etc/ssl/certs/MOTOR_SCADA_KERNEL-CARS_COM.crt
+    private_Key:  files/certs/kernel-cars.com/MOTOR_SCADA_KERNEL-CARS_COM.key
+    private_Key_dst:  "/etc/ssl/certs/private/MOTOR_SCADA_KERNEL-CARS_COM.key"
+
+  - servername: "support.cloudmisecurity.com"
+    target: gophish
+    certificate_file:  files/certs/cloudmisecurity.com/SUPPORT_CLOUDMISECURITY_COM.crt
+    certificate_file_dst:   /etc/ssl/certs/SUPPORT_CLOUDMISECURITY_COM.crt
+    private_Key:  files/certs/cloudmisecurity.com/SUPPORT_CLOUDMISECURITY_COM.key
+    private_Key_dst:  "/etc/ssl/certs/private/SUPPORT_CLOUDMISECURITY_COM.key"
+
+  - servername: "c-days.cncs.gov.pt"
+    target: gophish
+    certificate_file: files/certs/gov.pt/C_DAYS_CNCS_GOV_PT.crt
+    certificate_file_dst: /etc/ssl/certs/C_DAYS_CNCS_GOV_PT.crt
+    private_Key: files/certs/gov.pt/C_DAYS_CNCS_GOV_PT.key
+    private_Key_dst: "/etc/ssl/certs/private/C_DAYS_CNCS_GOV_PT.key"
+
+  - servername: "www.oracle.com"
+    target: gophish
+    certificate_file: files/certs/oracle.com/WWW_ORACLE_COM.crt
+    certificate_file_dst: /etc/ssl/certs/WWW_ORACLE_COM.crt
+    private_Key: files/certs/oracle.com/WWW_ORACLE_COM.key
+    private_Key_dst: "/etc/ssl/certs/private/WWW_ORACLE_COM.key"
+
+  - servername: "support.oracle.com"
+    target: gophish
+    certificate_file: files/certs/oracle.com/SUPPORT_ORACLE_COM.crt
+    certificate_file_dst:  /etc/ssl/certs/SUPPORT_ORACLE_COM.crt
+    private_Key: files/certs/oracle.com/SUPPORT_ORACLE_COM.key
+    private_Key_dst: "/etc/ssl/certs/private/SUPPORT_ORACLE_COM.key"
+
+  - servername: "academia.edu"
+    target: gophish
+    certificate_file: files/certs/academia.edu/ACADEMIA_EDU.crt
+    certificate_file_dst:  /etc/ssl/certs/ACADEMIA_EDU.crt
+    private_Key: files/certs/academia.edu/ACADEMIA_EDU.key
+    private_Key_dst: "/etc/ssl/certs/private/ACADEMIA_EDU.key"
+
+  - servername: "teams.microsoft.com"
+    target: gophish
+    certificate_file:  files/certs/microsoft.com/TEAMS_MICROSOFT_COM.crt
+    certificate_file_dst:   /etc/ssl/certs/TEAMS_MICROSOFT_COM.crt
+    private_Key:  files/certs/microsoft.com/TEAMS_MICROSOFT_COM.key
+    private_Key_dst:  "/etc/ssl/certs/private/TEAMS_MICROSOFT_COM.key"
+
+  - servername: "iam.kernelcars.com"
+    target: gophish
+    certificate_file:  files/certs/kernelcars.com/IAM_KERNELCARS_COM.crt
+    certificate_file_dst:   /etc/ssl/certs/IAM_KERNELCARS_COM.crt
+    private_Key:  files/certs/kernelcars.com/IAM_KERNELCARS_COM.key
+    private_Key_dst:  "/etc/ssl/certs/private/IAM_KERNELCARS_COM.key"
+
+  - servername: "scada.kernelcars.com"
+    target: gophish
+    certificate_file: files/certs/kernelcars.com/SCADA_KERNELCARS_COM.crt
+    certificate_file_dst: /etc/ssl/certs/SCADA_KERNELCARS_COM.crt
+    private_Key: files/certs/kernelcars.com/SCADA_KERNELCARS_COM.key
+    private_Key_dst: "/etc/ssl/certs/private/SCADA_KERNELCARS_COM.key"
+
+  - servername: "service-now.com"
+    target: gophish
+    certificate_file:  files/certs/service-now.com/SERVICE-NOW_COM.crt
+    certificate_file_dst:   /etc/ssl/certs/SERVICE-NOW_COM.crt
+    private_Key:  files/certs/service-now.com/SERVICE-NOW_COM.key
+    private_Key_dst:  "/etc/ssl/certs/private/SERVICE-NOW_COM.key"

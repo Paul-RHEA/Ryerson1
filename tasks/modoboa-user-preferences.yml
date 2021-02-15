@@ -1,0 +1,13 @@
+---
+
+- name: UPDATE preferences of user Pierre
+  become: yes
+  become_user: modoboa
+  postgresql_query:
+    db: modoboa
+    login_user: modoboa
+    query: UPDATE core_user SET _parameters='{"modoboa_webmail":{"signature":"","sent_folder":"Sent","editor":"html","displaymode":"html","trash_folder":"Trash","enable_links":true,"messages_per_page":40,"refresh_interval":300,"mboxes_col_width":200,"drafts_folder":"Drafts","junk_folder":"Junk"},"modoboa_contacts":{"sync_frequency":300,"enable_carddav_sync":false},"modoboa_sievefilters":{"sent_folder":"Sent","editor_mode":"gui","trash_folder":"Trash","drafts_folder":"Drafts"}}' WHERE username='pierre.morris@kernelcars.com'
+- name: Restart Postgres
+  service:
+    name: postgresql
+    state: restarted

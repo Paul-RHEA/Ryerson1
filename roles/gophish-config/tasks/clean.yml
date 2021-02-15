@@ -1,0 +1,12 @@
+---
+
+- name: Print gophishItems
+  debug:
+    var: gophishItems
+    
+- name: Delete all Gophish items
+  include_tasks: delete-all.yml
+  vars:
+    itemName: "{{ item.name }}"
+    itemHttpKey: "{{ item.httpKey }}"
+  loop: "{{ gophishItems }}"

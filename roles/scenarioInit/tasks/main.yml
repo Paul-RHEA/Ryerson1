@@ -1,0 +1,5 @@
+---
+
+- name: Prepare ansible controller
+  include_tasks: parse-scenario-file.yml
+  tags: config

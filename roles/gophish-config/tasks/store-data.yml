@@ -1,0 +1,19 @@
+- name: Get "{{ itemName }}"
+  uri:
+    url: "{{ api_url_base }}/{{ itemHttpKey }}?api_key={{ api_token }}" #smtp/"
+    method: GET
+    status_code: 200
+    validate_certs: no
+  register: res
+
+
+- name: Print "{{ itemName }}"
+  debug:
+    var: res
+
+- name: Save "{{ itemName }}"
+  copy:
+    content: "{{ res.json }}"
+    dest: "{{ destPath }}{{ itemFilename }}"
+    owner: env-admin
+    group: env-admin

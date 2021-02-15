@@ -1,0 +1,44 @@
+---
+# tasks file for modoboa-config
+
+
+#### TODO###
+#  - Restrict management access to MGT net only
+
+- name: Stop all dockers
+  shell: docker ps -a | tail -n +2 | cut -d " " -f 1 | xargs docker stop
+  ignore_errors: yes
+
+- name: Remove all stopped dockers
+  shell: docker ps -a | tail -n +2 | cut -d " " -f 1 | xargs docker rm
+  ignore_errors: yes
+
+- name: Delete all images
+  shell: docker images | tail -n +2 | tr -s " " | cut -d " " -f 3 | xargs docker rmi -f
+  ignore_errors: yes
+
+
+
+
+#  register: _result
+#  until: _result.status == 200
+#  retries: 7200 # 720 * 5 seconds = 1hour * 10 = 10hours (60*60/5)
+#  delay: 5 # every 5sec
+
+#- debug:
+#    msg: "ready"
+
+#- name: Access setup
+#  include_tasks: access-setup.yml
+
+#- name: backup configuration
+#  include_tasks: backup-configuration.yml
+#  when: configAction == 'backup'
+
+#- name: Clean configuration
+#  include_tasks: clean.yml
+#  when: configAction == 'clean' or configAction == 'configure'
+
+#- name: Load data
+#  include_tasks: load-configuration.yml
+#  when: configAction == 'add' or configAction == 'configure'

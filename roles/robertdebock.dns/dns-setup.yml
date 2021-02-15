@@ -1,0 +1,251 @@
+---
+# defaults file for dns
+
+ns1_citef_int_ip: "{{ dns_ip }}"
+mail_citef_int_ip: "{{ mail_srv_ip }}"
+
+iam_kernelcars_com_ip: "{{ gophish_ip }}"
+scada_kernelcars_com_ip: "{{ gophish_ip }}"
+scada_intranet_kernelcars_com_ip: "{{ web_srv_ip }}"
+office_365_com_ip: "{{ gophish_ip }}"
+training_kernelcars_com_ip: "{{ gophish_ip }}"
+#kernel-cars.com
+kernel__cars_com_ip: "{{ gophish_ip }}"
+scada_kernel__cars_com_ip: "{{ gophish_ip }}"
+
+plcsupport_siemen_com_ip: "{{ gophish_ip }}"
+kernel_cars_com_ip: "{{ gophish_ip }}"
+iam_cars_com_ip: "{{ gophish_ip }}"
+support_cloudmisecurity_com_ip: "{{ gophish_ip }}"
+www_c_days_cncs_gov_pt_ip: "{{ web_srv_ip }}"
+www_meetup_com_ip: "{{ web_srv_ip }}"
+academia_edu_ip: "{{ web_srv_ip }}"
+teams_microsoft_com_ip: "{{ web_srv_ip }}"
+support_oracle_com_ip: "{{ web_srv_ip }}"
+
+# Should the DNS server be a caching DNS server?
+dns_caching_dns: yes
+
+# A list of zones and properties per zone.
+dns_zones:
+  - name: localhost
+    soa: localhost
+    serial: 1
+    refresh: 604800
+    rety: 86400
+    expire: 2419200
+    ttl: 604800
+    records:
+      - name: "@"
+        type: NS
+        value: localhost.
+      - name: "@"
+        value: 127.0.0.1
+      - name: "@"
+        type: AAAA
+        value: ::1
+
+  - name: 127.in-addr.arpa
+    ttl: 604800
+    records:
+      - name: "@"
+        type: NS
+        value: localhost.
+      - name: 1.0.0
+        type: PTR
+        value: localhost.
+
+  - name: 0.in-addr.arpa
+    records:
+      - name: "@"
+        type: NS
+        value: localhost.
+
+  - name: 255.in-addr.arpa
+    records:
+      - name: "@"
+        type: NS
+        value: localhost.
+
+  - name: citef.int #
+    ttl: 604800
+    ns:
+      - name: ns1.citef.int.
+    mx:
+      - name: mail.citef.int.
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: mail
+        value: "{{ mail_citef_int_ip }}"
+
+
+
+  - name: kernelcars.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: iam
+        value: "{{ iam_kernelcars_com_ip }}"
+      - name: scada
+        value: "{{ scada_kernelcars_com_ip }}"
+
+  - name: intranet.kernelcars.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: scada
+        value: "{{ scada_intranet_kernelcars_com_ip }}"
+
+  - name: 365.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: office
+        value: "{{ office_365_com_ip }}"
+
+  - name: training-kernelcars.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: "@"
+        value: "{{ training_kernelcars_com_ip }}"
+
+  - name: kernel-cars.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: "@"
+        value: "{{ kernel__cars_com_ip }}"
+      - name: scada
+        value: "{{ scada_kernel__cars_com_ip }}"
+
+  - name: siemen.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: plcsupport
+        value: "{{ plcsupport_siemen_com_ip }}"
+
+  - name: cars.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: kernel
+        value: "{{ kernel_cars_com_ip }}"
+      - name: iam
+        value: "{{ iam_cars_com_ip }}"
+
+  - name: cloudmisecurity.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: support
+        value: "{{ support_cloudmisecurity_com_ip }}"
+
+  - name: c-days.cncs.gov.pt #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: www
+        value: "{{ www_c_days_cncs_gov_pt_ip }}"
+
+  - name: meetup.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: www
+        value: "{{ www_meetup_com_ip }}"
+
+  - name: academia.edu #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: "@"
+        value: "{{ academia_edu_ip }}"
+
+  - name: microsoft.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: teams
+        value: "{{ teams_microsoft_com_ip }}"
+
+  - name: oracle.com #
+    ttl: 604800
+    ns:
+      - name: ns1
+    records:
+      - name: ns1
+        value: "{{ ns1_citef_int_ip }}"
+      - name: support
+        value: "{{ support_oracle_com_ip }}"
+
+
+# An optional list of acls to allow recursion. ("any" and "none" are always available.)
+dns_allow_recursion:
+  - none
+
+# An optional list of IPv4 on which the DNS server will listen. ("any" and "none" are always available.)
+dns_options_listen_on:
+  - 'any'
+
+# A optional list of IPv6 on which the DNS server will listen. ("any" and "none" are always available.)
+dns_options_listen_on_v6:
+  - 'none'
+
+# An optional list of IP which are allowed to query the server. ("any" and "none" are always available.)
+# Default: "any"
+# dns_options_allow_query:
+#  - 'any'
+#  - '127.0.0.1'
+
+# An optional list of IP which are allowed to run a AXFR query. ("any" and "none" are always available.)
+# Default: "none"
+# dns_options_allow_transfer:
+#   - 'none'
+#   - '172.16.0.1'
+
+# An optional setting to congifure the path where the pid file will be created.
+# dns_pid_file: '/var/run/named/named.pid'
+
+# An optional setting to forward traffic to other DNS servers.
+# dns_options_forwarders:
+#   - 1.1.1.1
+#   - 8.8.8.8

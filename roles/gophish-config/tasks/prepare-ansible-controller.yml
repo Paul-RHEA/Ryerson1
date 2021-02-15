@@ -1,0 +1,19 @@
+---
+
+- name: Add modoboa hosts entry
+  lineinfile:
+    path: /etc/hosts
+    state: present
+    line: '{{ gophish_srv_ip }}    gophish'
+
+
+#- name: create inventory files
+#  lineinfile:
+#    path: ./inventory
+#    line: gophish ansible_host={{ gophish_srv_ip }} ansible_python_interpreter=/usr/bin/python3
+
+#- name: add to running (in memory) hosts inventory
+#  add_host:
+#    hostname: gophish
+#    ansible_host: "{{ gophish_srv_ip }}"
+#    ansible_python_interpreter: /usr/bin/python3
