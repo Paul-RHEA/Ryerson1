@@ -1,0 +1,84 @@
+---
+
+- name: Wait host to come up
+  wait_for_connection:
+    timeout:  36000 # 10 hours
+    sleep: 5
+
+
+  tasks:
+    - name: Copy Splunk Installer to Splunk Server
+      copy:
+        src: 'splunk-8.1.1-08187535c166-linux-2.6-amd64.deb'
+        dest: '/home/env-admin/splunk-8.1.1-08187535c166-linux-2.6-amd64.deb'
+
+    - name: Run Splunk Installer to Install Splunk
+      command: dpkg -i splunk-8.1.1-08187535c166-linux-2.6-amd64.deb
+
+    - name: Need to copy over Pexpect Python Module for Ansible Expect to be supported
+      copy:
+        src: 'pexpect'
+        dest: '/home/env-admin/pexpect'
+
+    - name: Install Pexpect Module on Splunk Server
+      command: pip3 install pexpect-4.8.0-py2.py3-none-any.whl --no-index --find-links .
+      args:
+        chdir: /home/env-admin/pexpect/pexpect/
+
+    - name: Start Splunk After Install is Complete
+      #Use Expect to handle prompts
+      expect:
+        command: /opt/splunk/bin/splunk start --accept-license
+        responses:
+          Please enter an administrator username: env-admin
+          Please enter a new password: admin-env
+          Please confirm new password: admin-env
+
+    - name: Wait Until Port 8000 is UP on Ubuntu Server. Port 8000 is Splunk.
+      wait_for:
+        port: 8000
+
+    - name: Configure Splunk Receiving
+      command: /opt/splunk/bin/splunk enable listen 9997 -auth env-admin:admin-env
+
+    #Need to enter Splunk Username/Password for first one
+    - name: Create Custom Index for Windows Endpoint
+      expect:
+        command: /opt/splunk/bin/splunk add index wineventlog
+        responses:
+          Splunk username: env-admin
+          Password: admin-env
+
+    - name: Create Custom Index for Windows AD
+      command: /opt/splunk/bin/splunk add index winservad
+
+    - name: Create Custom Index for Linux (Ubuntu)
+      command: /opt/splunk/bin/splunk add index linuxlogs
+
+    - name: Upload Dev License File to Splunk Server
+      copy:
+        src: 'Splunk.License'
+        dest: '/home/env-admin/splunk.lic'
+
+    - name: Upload Security Essentials Add-on to Splunk Server
+      copy:
+        src: 'splunk-security-essentials_330.tgz'
+        dest: '/home/env-admin/splunk-security-essentials_330.tgz'
+
+    - name: Install new Add-on on Splunk
+      command: /opt/splunk/bin/splunk install app /home/env-admin/splunk-security-essentials_330.tgz -auth env-admin:admin-env
+
+    - name: Copying RHEA Saved Searches to Splunk
+      copy:
+        src: 'savedsearches.conf'
+        dest: '/opt/splunk/etc/apps/search/local/savedsearches.conf'
+
+    - name: Apply Dev License to Splunk
+      expect:
+        command: /opt/splunk/bin/splunk add licenses /home/env-admin/splunk.lic
+        responses:
+          Splunk username: env-admin
+          Password: admin-env
+
+    - name: Splunk Needs to be Restarted for License and other Changes to Take Effect
+      command: /opt/splunk/bin/splunk restart

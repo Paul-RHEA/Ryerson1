@@ -25,31 +25,11 @@
   vars:
     ansible_become_pass: '{{ become_p }}'
     gophish_ip: "{{ hostvars.GOPHISH.vm.nics | getUserLayerIP }}"
-    web_srv_ip: "{{ hostvars.INTERNET_SRV.vm.nics | getUserLayerIP }}"
-    mail_srv_ip: "{{ hostvars.MODOBOA.vm.nics | getUserLayerIP }}"
+    mail_ip: "{{ hostvars.MODOBOA.vm.nics | getUserLayerIP }}"
     dns_ip: "{{ hostvars.DNS_SRV.vm.nics | getUserLayerIP }}"
-    SOMaster_ip: "{{ hostvars.SO_MASTER.vm.nics | getUserLayerIP }}"
   tasks:
     - include_tasks: tasks/config-dns.yml
   tags: config-dns
-
-- name: Configue Enterprise VyOS
-  hosts: VyOS_ENTERPRISE
-  gather_facts: no
-  vars:
-    vyos_type: enterprise
-  roles:
-    - config-vyos
-  tags: [ vyos, ent_vyos ]
-
-- name: Configue SCADA VyOS
-  hosts: VyOS_SCADA
-  gather_facts: no
-  vars:
-    vyos_type: SCADA
-  roles:
-    - config-vyos
-  tags: [ vyos, SCADA_vyos]
 
 - name: Configure ssl in Email_Srv
   hosts: MODOBOA
@@ -65,7 +45,8 @@
   tags: email-ssl
 
 - name: Configure Email_Srv
-  hosts: localhost
+  hosts: MODOBOA
+  connection: local
   become: yes
   become_user: root
   vars_files:
@@ -76,8 +57,8 @@
     configAction: 'configure'
     mail_srv_ip: '{{ hostvars.MODOBOA.ansible_host }}'
     domainsAndAccounts: "{{ hostvars.MODOBOA.vm.configuration.domainsAndAccounts }}"
-    main_domain: 'citef.int'
-    mail_srv_url: 'https://mail.{{ main_domain }}'
+    domain: 'mail.modoboa.int'
+    mail_srv_url: 'https://{{ domain }}'
     api_url_base: '{{ mail_srv_url }}/api/v1/'
   roles:
     - modoboa-config
@@ -96,22 +77,9 @@
     - include_tasks: tasks/modoboa-user-preferences.yml
   tags: email-user-prefs
 
-- name: Configure Internet Srv
-  hosts: INTERNET_SRV
-  gather_facts: no
-  become: yes
-  become_user: root
-  vars_files:
-      - /etc/ansible/host_vars/vault_vars.yml
-      - vars/web_srv.yml
-  vars:
-    ansible_become_pass: '{{ become_p }}'
-  roles:
-    - config-web
-  tags: config-web
-
 - name: Configure Gophish
-  hosts: localhost
+  hosts: GOPHISH
+  connection: local
   become: yes
   become_user: root
   vars_files:
@@ -177,66 +145,6 @@
     - dmz-srv
   tags: dmz
 
-- name: Configure SO Master Server
-  hosts: SO_MASTER
-  gather_facts: no
-  become: yes
-  become_user: root
-  vars_files:
-      /etc/ansible/host_vars/vault_vars.yml
-  vars:
-    ansible_become_pass: '{{ become_p }}'
-  roles:
-    - SO-master
-  tags: [ somaster, so]
-
-- name: Configure SO Forwarders
-  hosts: SO_FW
-  gather_facts: no
-  become: yes
-  become_user: root
-  vars_files:
-      /etc/ansible/host_vars/vault_vars.yml
-  vars:
-    ansible_become_pass: '{{ become_p }}'
-  roles:
-    - SO-forward
-  tags: [ soforward, so]
-
-- name: Configure Rsyslog forwarding
-  hosts: RSYSLOG
-  gather_facts: no
-  become: yes
-  become_user: root
-  vars_files:
-      /etc/ansible/host_vars/vault_vars.yml
-  vars:
-    ansible_become_pass: '{{ become_p }}'
-  tasks:
-    - include_tasks: tasks/rsyslog.yml
-  tags: [ so-syslog, so ]
-
-- name: Configure SO Storage
-  hosts: SO_STORAGE
-  gather_facts: no
-  become: yes
-  become_user: root
-  vars_files:
-      /etc/ansible/host_vars/vault_vars.yml
-  vars:
-    ansible_become_pass: '{{ become_p }}'
-  roles:
-    - SO-storage
-  tags: [ sostorage, so]
-
-- name: Set-up Active Directory forest and domain controller
-  #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
-  hosts: WIN_SRV
-  gather_facts: no
-  roles:
-    - AD-DC
-  tags: [ ad, ad-dc]
-
 - name: Change WIN_WKS hostame
   #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
   hosts: WIN_WKS
@@ -256,3 +164,45 @@
   roles:
     - win-hostname
   tags: [ win-hostname]
+
+- name: Set-up Palo Alto VM50
+  hosts: VM50
+  gather_facts: no
+  roles:
+    - PA-VM50
+  tags: [ vm50 ]
+
+- name: Configure Splunk server
+  hosts: SPLUNK
+  become: yes
+  become_user: root
+  gather_facts: no
+  roles:
+    config-splunk
+  tags: [ splunk, splunk-srv ]
+
+  - name: Configure Splunk forwarders on Linux
+    hosts: DMZ_SRV
+    become: yes
+    become_user: root
+    gather_facts: no
+    roles:
+      linux-splunk-fw
+    tags: [ splunk, splunk-fw, splunk-fw-win ]
+
+  - name: Configure Splunk forwarders on Windows
+    hosts: WKS1,WKS2,WIN_SRV
+    become: yes
+    become_user: root
+    gather_facts: no
+    roles:
+      win-splunk-fw
+    tags: [ splunk, splunk-fw, splunk-fw-linux ]
+
+  - name: Set-up Active Directory forest and domain controller
+    #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
+    hosts: WIN_SRV
+    gather_facts: no
+    roles:
+      - AD-DC
+    tags: [ ad, ad-dc]

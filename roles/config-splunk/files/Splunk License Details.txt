@@ -1,0 +1,8 @@
+License Details:
+Product: Splunk Developer Personal License NOT FOR RESALE
+Size: 10 GB
+Expiration Date: July 31, 2021 11:59 PM 
+
+
+
+See Splunk.License file

@@ -5,9 +5,6 @@
     timeout:  36000 # 10 hours
     sleep: 5
 
-- name: Gather facts
-  setup:
-
 - name: Create directory Templates
   file:
     path: /home/student/Templates
@@ -45,6 +42,13 @@
     owner: student
     group: student
 
+- name: Create dir "/home/student/Desktop
+  file:
+    path: "/home/student/Desktop/"
+    state: directory
+    owner: student
+    group: student
+
 - name: copy Webmail shortcut
   copy:
     src: "uservm/Webmail.desktop"
@@ -52,13 +56,6 @@
     owner: "student"
     group: "student"
     mode: "0777"
-
-- name: Create dir "/home/student/Desktop
-  file:
-    path: "/home/student/Desktop/"
-    state: directory
-    owner: student
-    group: student
 
 - name: Create dir "/home/student/Desktop/passwords
   file:

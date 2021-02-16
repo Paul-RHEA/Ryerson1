@@ -1,34 +1,8 @@
 ---
-# defaults file for dns
 
-ns1_citef_int_ip: "{{ dns_ip }}"
-mail_citef_int_ip: "{{ mail_srv_ip }}"
+dns_port: 53
 
-kernelcars_com_ip: "{{ web_srv_ip }}"
-iam_kernelcars_com_ip: "{{ web_srv_ip }}"
-scada_kernelcars_com_ip: "{{ web_srv_ip }}"
-scada_intranet_kernelcars_com_ip: "{{ web_srv_ip }}"
-office_365_com_ip: "{{ web_srv_ip }}"
-training_kernelcars_com_ip: "{{ web_srv_ip }}"
-#kernel-cars.com
-kernel__cars_com_ip: "{{ web_srv_ip }}"
-scada_kernel__cars_com_ip: "{{ web_srv_ip }}"
-
-plcsupport_siemen_com_ip: "{{ web_srv_ip }}"
-kernel_cars_com_ip: "{{ web_srv_ip }}"
-iam_cars_com_ip: "{{ web_srv_ip }}"
-iam_kernel_cars_com_ip: "{{ web_srv_ip }}"
-support_cloudmisecurity_com_ip: "{{ web_srv_ip }}"
-www_c_days_cncs_gov_pt_ip: "{{ web_srv_ip }}"
-www_meetup_com_ip: "{{ web_srv_ip }}"
-academia_edu_ip: "{{ web_srv_ip }}"
-teams_microsoft_com_ip: "{{ web_srv_ip }}"
-support_oracle_com_ip: "{{ web_srv_ip }}"
-service_now_com: "{{ web_srv_ip }}"
-soc_citef_int_ip: "{{ SOMaster_ip }}"
-# Should the DNS server be a caching DNS server?
 dns_caching_dns: no # if yes tries to connect and download /hitns/root
-
 
 # A list of zones and properties per zone.
 dns_zones:
@@ -71,195 +45,43 @@ dns_zones:
         type: NS
         value: localhost.
 
-  - name: gophish #
+  - name: myisp.ca
     ttl: 604800
     ns:
-      - name: ns1.citef.int.
+      - name: ns1.myisp.ca.
     mx:
-      - name: mail.citef.int.
-    records:
-      - name: "@"
-        value: "{{ gophish_ip }}"
-
-  - name: citef.int #
-    ttl: 604800
-    ns:
-      - name: ns1.citef.int.
-    mx:
-      - name: mail.citef.int.
+      - name: mail.myisp.ca.
     records:
       - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
+        value: "{{dns_ip }}"
       - name: mail
-        value: "{{ mail_citef_int_ip }}"
-      - name: soc
-        value: "{{ soc_citef_int_ip }}"
+        value: "{{ mail_ip }}"
 
-  - name: kernelcars.com #
+  - name: kernelcars.com
     ttl: 604800
     ns:
-      - name: ns1
+      - name: ns1.kernelcars.com.
+    mx:
+      - name: mail.kernelcars.com.
     records:
       - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: iam
-        value: "{{ kernelcars_com_ip }}"
-      - name: iam
-        value: "{{ iam_kernelcars_com_ip }}"
-      - name: scada
-        value: "{{ scada_kernelcars_com_ip }}"
+        value: "{{dns_ip }}"
+      - name: mail
+        value: "{{ mail_ip }}"
 
-
-
-  - name: intranet.kernelcars.com #
+  - name: attacker.com
     ttl: 604800
     ns:
-      - name: ns1
+      - name: ns1.attacker.com.
+    mx:
+      - name: mail.attacker.com.
     records:
       - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: scada
-        value: "{{ scada_intranet_kernelcars_com_ip }}"
-
-  - name: 365.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: office
-        value: "{{ office_365_com_ip }}"
-      - name: www.office
-        value: "{{ office_365_com_ip }}"
-
-  - name: training-kernelcars.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: "@"
-        value: "{{ training_kernelcars_com_ip }}"
-      - name: "www"
-        value: "{{ training_kernelcars_com_ip }}"
-
-  - name: kernel-cars.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: "@"
-        value: "{{ kernel__cars_com_ip }}"
-      - name: "www"
-        value: "{{ kernel__cars_com_ip }}"
-      - name: scada
-        value: "{{ scada_kernel__cars_com_ip }}"
-      - name: motor.scada
-        value: "{{ scada_kernel__cars_com_ip }}"
-
-  - name: siemen.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: plcsupport
-        value: "{{ plcsupport_siemen_com_ip }}"
-
-  - name: cars.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: kernel
-        value: "{{ kernel_cars_com_ip }}"
-      - name: iam
-        value: "{{ iam_cars_com_ip }}"
-      - name: iam.kernel
-        value: "{{ iam_kernel_cars_com_ip }}"
-
-  - name: cloudmisecurity.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: support
-        value: "{{ support_cloudmisecurity_com_ip }}"
-
-  - name: c-days.cncs.gov.pt #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: www
-        value: "{{ www_c_days_cncs_gov_pt_ip }}"
-      - name: "@"
-        value: "{{ www_c_days_cncs_gov_pt_ip }}"
-
-  - name: meetup.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: www
-        value: "{{ www_meetup_com_ip }}"
-
-  - name: academia.edu #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: "@"
-        value: "{{ academia_edu_ip }}"
-
-  - name: microsoft.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: teams
-        value: "{{ teams_microsoft_com_ip }}"
-
-  - name: oracle.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: support
-        value: "{{ support_oracle_com_ip }}"
-      - name: www
-        value: "{{ support_oracle_com_ip }}"
-
-  - name: service-now.com #
-    ttl: 604800
-    ns:
-      - name: ns1
-    records:
-      - name: ns1
-        value: "{{ ns1_citef_int_ip }}"
-      - name: "@"
-        value: "{{ support_oracle_com_ip }}"
-      - name: "www"
-        value: "{{ support_oracle_com_ip }}"
+        value: "{{dns_ip }}"
+      - name: mail
+        value: "{{ mail_ip }}"
+      - name: gophish
+        value: "{{ gophish_ip }}"
 
 # An optional list of acls to allow recursion. ("any" and "none" are always available.)
 dns_allow_recursion:
