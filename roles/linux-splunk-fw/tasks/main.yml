@@ -13,6 +13,17 @@
 - name: Run Splunk Forwarder Installer on Ubuntu Endpoint
   command: dpkg -i splunkforwarder-8.1.1-08187535c166-linux-2.6-amd64.deb
 
+
+- name: Need to copy over Pexpect Python Module for Ansible Expect to be supported
+  copy:
+    src: 'pexpect'
+    dest: '/home/env-admin/pexpect'
+
+- name: Install Pexpect Module on Splunk Server
+  command: pip3 install pexpect-4.8.0-py2.py3-none-any.whl --no-index --find-links .
+  args:
+    chdir: /home/env-admin/pexpect/pexpect/
+
 - name: Start Splunk Forwarder on Ubuntu Endpoint
   expect:
     command: /opt/splunkforwarder/bin/splunk start --accept-license
