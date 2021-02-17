@@ -167,6 +167,7 @@
 
 - name: Set-up Palo Alto VM50
   hosts: VM50
+  connection: local
   gather_facts: no
   roles:
     - PA-VM50
@@ -178,31 +179,31 @@
   become_user: root
   gather_facts: no
   roles:
-    config-splunk
+    - config-splunk
   tags: [ splunk, splunk-srv ]
 
-  - name: Configure Splunk forwarders on Linux
-    hosts: DMZ_SRV
-    become: yes
-    become_user: root
-    gather_facts: no
-    roles:
-      linux-splunk-fw
-    tags: [ splunk, splunk-fw, splunk-fw-win ]
+- name: Configure Splunk forwarders on Linux
+  hosts: DMZ_SRV
+  become: yes
+  become_user: root
+  gather_facts: no
+  roles:
+    - linux-splunk-fw
+  tags: [ splunk, splunk-fw, splunk-fw-win ]
 
-  - name: Configure Splunk forwarders on Windows
-    hosts: WKS1,WKS2,WIN_SRV
-    become: yes
-    become_user: root
-    gather_facts: no
-    roles:
-      win-splunk-fw
-    tags: [ splunk, splunk-fw, splunk-fw-linux ]
+- name: Configure Splunk forwarders on Windows
+  hosts: WKS1,WKS2,WIN_SRV
+  become: yes
+  become_user: root
+  gather_facts: no
+  roles:
+    - win-splunk-fw
+  tags: [ splunk, splunk-fw, splunk-fw-linux ]
 
-  - name: Set-up Active Directory forest and domain controller
-    #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
-    hosts: WIN_SRV
-    gather_facts: no
-    roles:
-      - AD-DC
-    tags: [ ad, ad-dc]
+- name: Set-up Active Directory forest and domain controller
+  #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
+  hosts: WIN_SRV
+  gather_facts: no
+  roles:
+    - AD-DC
+  tags: [ ad, ad-dc]

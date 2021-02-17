@@ -1,0 +1,18 @@
+{
+  "logger": {
+    "title": "Remote Sync"
+  },
+  "transport": "scp",
+  "uploadOnSave": false,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "10.242.0.130",
+  "target": "/CitefAnsibleFiles/scenarioFiles/RHEA/Ryerson1",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**"
+  ],
+  "username": "env-admin",
+  "password": "admin-env",
+  "watch": []
+}

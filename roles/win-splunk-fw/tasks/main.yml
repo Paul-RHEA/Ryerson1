@@ -24,11 +24,11 @@
     dest: 'C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf'
   when: ansible_hostname == 'WIN_SRV'
 
-  - name: Copy Inputs.conf to Win Endpoint
-    win_copy:
-      src: 'inputs/WinAD/inputs.conf'
-      dest: 'C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf'
-    when: ansible_hostname != 'WIN_SRV'
+- name: Copy Inputs.conf to Win Endpoint
+  win_copy:
+    src: 'inputs/WinAD/inputs.conf'
+    dest: 'C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf'
+  when: ansible_hostname != 'WIN_SRV'
 
 - name: Restart The Splunk Forwarder on Win
   win_command: splunk restart

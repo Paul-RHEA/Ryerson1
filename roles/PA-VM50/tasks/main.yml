@@ -1,209 +1,201 @@
 ---
 
-- name: Configure Enterprise VM50
-  hosts: VM-50
-  collections:
-      - paloaltonetworks.panos
-  connection: local
-  gather_facts: no
+- name: Wait FW to come up
+  panos_check:
+    provider: '{{ provider }}'
+    interval: 5
+    timeout: 1200
 
-  tasks:
-    - name: Wait FW to come up
-      panos_check:
-        provider: '{{ provider }}'
-        interval: 5
-        timeout: 1200
+- name: External Zone
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'EXT'
+    mode: 'layer3'
+    interface: ['ethernet1/1']
 
-    - name: External Zone
-      panos_zone:
-        provider: '{{ provider }}'
-        zone: 'EXT'
-        mode: 'layer3'
-        interface: ['ethernet1/1']
+- name: Enterprise LAN
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'LAN'
+    mode: 'layer3'
+    interface: ['ethernet1/2']
 
-    - name: Enterprise LAN
-      panos_zone:
-        provider: '{{ provider }}'
-        zone: 'LAN'
-        mode: 'layer3'
-        interface: ['ethernet1/2']
+- name: DMZ Zone
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'DMZ'
+    mode: 'layer3'
+    interface: ['ethernet1/3']
 
-    - name: DMZ Zone
-      panos_zone:
-        provider: '{{ provider }}'
-        zone: 'DMZ'
-        mode: 'layer3'
-        interface: ['ethernet1/3']
-
-    - name: SOC Zone
-      panos_zone:
-        provider: '{{ provider }}'
-        zone: 'SOC'
-        mode: 'layer3'
-        interface: ['ethernet1/4']
+- name: SOC Zone
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'SOC'
+    mode: 'layer3'
+    interface: ['ethernet1/4']
 
 
-    - name: Configure virtual router
-      panos_virtual_router:
-        provider: '{{ provider }}'
-        name: 'ROUTER'
-        interface: ['ethernet1/1','ethernet1/2','ethernet1/3','ethernet1/4']
+- name: Configure virtual router
+  panos_virtual_router:
+    provider: '{{ provider }}'
+    name: 'ROUTER'
+    interface: ['ethernet1/1','ethernet1/2','ethernet1/3','ethernet1/4']
 
-    - name: Configure Empty Management profile
-      panos_management_profile:
-        provider: '{{ provider }}'
-        name: 'Empty'
-        http: false
-        http_ocsp: false
-        https: false
-        ping: false
-        response_pages: false
-        snmp: false
-        ssh: false
-        telnet: false
+- name: Configure Empty Management profile
+  panos_management_profile:
+    provider: '{{ provider }}'
+    name: 'Empty'
+    http: false
+    http_ocsp: false
+    https: false
+    ping: false
+    response_pages: false
+    snmp: false
+    ssh: false
+    telnet: false
 
-    - name: Configure Ping Management profile
-      panos_management_profile:
-        provider: '{{ provider }}'
-        name: 'Ping'
-        ping: true
+- name: Configure Ping Management profile
+  panos_management_profile:
+    provider: '{{ provider }}'
+    name: 'Ping'
+    ping: true
 
-    - name: Configure Ping + HTTP Management profile
-      panos_management_profile:
-        provider: '{{ provider }}'
-        name: 'Ping-HTTP'
-        ping: true
-        http: true
+- name: Configure Ping + HTTP Management profile
+  panos_management_profile:
+    provider: '{{ provider }}'
+    name: 'Ping-HTTP'
+    ping: true
+    http: true
 
-    - name: Commit configuration
-      panos_commit_firewall:
-        provider: '{{ provider }}'
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'
 
-    - name: Configure ethernet 1/1 interface
-      panos_interface:
-        provider: '{{ provider }}'
-        if_name: 'ethernet1/1'
-        mode: 'layer3'
-        ip: ['100.100.0.2/24']
-        enable_dhcp: false
-        zone_name: 'EXT'
-        vr_name: 'router'
-        management_profile: 'Empty'
+- name: Configure ethernet 1/1 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/1'
+    mode: 'layer3'
+    ip: ['100.100.0.2/24']
+    enable_dhcp: false
+    zone_name: 'EXT'
+    vr_name: 'router'
+    management_profile: 'Empty'
 
-    - name: Configure ethernet 1/2 interface
-      panos_interface:
-        provider: '{{ provider }}'
-        if_name: 'ethernet1/2'
-        mode: 'layer3'
-        ip: ['100.10.10.6/24']
-        enable_dhcp: false
-        zone_name: 'LAN'
-        vr_name: 'router'
-        management_profile: 'Ping'
+- name: Configure ethernet 1/2 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/2'
+    mode: 'layer3'
+    ip: ['100.10.10.6/24']
+    enable_dhcp: false
+    zone_name: 'LAN'
+    vr_name: 'router'
+    management_profile: 'Ping'
 
-    - name: Configure ethernet 1/3 interface
-      panos_interface:
-        provider: '{{ provider }}'
-        if_name: 'ethernet1/3'
-        mode: 'layer3'
-        ip: ['10.10.20.1/24']
-        enable_dhcp: false
-        zone_name: 'DMZ'
-        vr_name: 'router'
-        management_profile: 'Empty'
+- name: Configure ethernet 1/3 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/3'
+    mode: 'layer3'
+    ip: ['10.10.20.1/24']
+    enable_dhcp: false
+    zone_name: 'DMZ'
+    vr_name: 'router'
+    management_profile: 'Empty'
 
-    - name: Configure ethernet 1/4 interface
-      panos_interface:
-        provider: '{{ provider }}'
-        if_name: 'ethernet1/4'
-        mode: 'layer3'
-        ip: ['10.10.30.1/24']
-        enable_dhcp: false
-        zone_name: 'SOC'
-        vr_name: 'router'
-        management_profile: 'Ping-HTTP'
+- name: Configure ethernet 1/4 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/4'
+    mode: 'layer3'
+    ip: ['10.10.30.1/24']
+    enable_dhcp: false
+    zone_name: 'SOC'
+    vr_name: 'router'
+    management_profile: 'Ping-HTTP'
 
-    - name: Create service for Splunk FW
-      panos_service_object:
-        provider: '{{ provider }}'
-        name: 'splunk_fw'
-        description: "Service for Splunk FW (Port 9997)"
-        destination_port: ['9997']
-        protocol: 'tcp'
+- name: Create service for Splunk FW
+  panos_service_object:
+    provider: '{{ provider }}'
+    name: 'splunk_fw'
+    description: "Service for Splunk FW (Port 9997)"
+    destination_port: ['9997']
+    protocol: 'tcp'
 
-    - name: Commit configuration
-      panos_commit_firewall:
-        provider: '{{ provider }}'
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'
 
-    - name: Allow Traffic from LAN to EXT
-      panos_security_rule:
-        provider: '{{ provider }}'
-        rule_name: 'LAN-EXT'
-        description: 'Allow Traffic from LAN to EXT'
-        source_zone: ['LAN']
-        destination_zone: ['EXT']
-        source_ip: ['100.10.10.0/24']
-        destination_ip: ['any']
-        action: 'allow'
+- name: Allow Traffic from LAN to EXT
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'LAN-EXT'
+    description: 'Allow Traffic from LAN to EXT'
+    source_zone: ['LAN']
+    destination_zone: ['EXT']
+    source_ip: ['100.10.10.0/24']
+    destination_ip: ['any']
+    action: 'allow'
 
-    - name: Allow Traffic from DMZ to EXT
-      panos_security_rule:
-        provider: '{{ provider }}'
-        rule_name: 'DMZ-EXT'
-        description: 'Allow Traffic from DMZ to EXT'
-        source_zone: ['DMZ']
-        destination_zone: ['EXT']
-        source_ip: ['100.10.20.0/24']
-        destination_ip: ['any']
-        action: 'allow'
+- name: Allow Traffic from DMZ to EXT
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'DMZ-EXT'
+    description: 'Allow Traffic from DMZ to EXT'
+    source_zone: ['DMZ']
+    destination_zone: ['EXT']
+    source_ip: ['100.10.20.0/24']
+    destination_ip: ['any']
+    action: 'allow'
 
-    - name: Allow Traffic from SOC to any
-      panos_security_rule:
-        provider: '{{ provider }}'
-        rule_name: 'SOC-ANY'
-        description: 'Allow Traffic from SOC to any'
-        source_zone: ['SOC']
-        destination_zone: ['any']
-        source_ip: ['100.10.30.0/24']
-        destination_ip: ['any']
-        action: 'allow'
+- name: Allow Traffic from SOC to any
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'SOC-ANY'
+    description: 'Allow Traffic from SOC to any'
+    source_zone: ['SOC']
+    destination_zone: ['any']
+    source_ip: ['100.10.30.0/24']
+    destination_ip: ['any']
+    action: 'allow'
 
-    - name: Allow HTTP Traffic from EXT to DMZ
-      panos_security_rule:
-        provider: '{{ provider }}'
-        rule_name: 'EXT-DMZ'
-        description: 'Allow HTTP Traffic from EXT to DMZ'
-        source_zone: ['EXT']
-        destination_zone: ['DMZ']
-        source_ip: ['any']
-        destination_ip: ['100.10.20.0/24']
-        application: ['general-internet','ssl']
-        action: 'allow'
+- name: Allow HTTP Traffic from EXT to DMZ
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'EXT-DMZ'
+    description: 'Allow HTTP Traffic from EXT to DMZ'
+    source_zone: ['EXT']
+    destination_zone: ['DMZ']
+    source_ip: ['any']
+    destination_ip: ['100.10.20.0/24']
+    application: ['general-internet','ssl']
+    action: 'allow'
 
-    - name: Allow logs from LAN to SOC
-      panos_security_rule:
-        provider: '{{ provider }}'
-        rule_name: 'logs-LAN'
-        description: 'Allow logs from LAN to SOC'
-        source_zone: ['LAN']
-        destination_zone: ['SOC']
-        source_ip: ['100.10.10.0/24']
-        destination_ip: ['100.10.30.0/24']
-        service: ['splunk_fw']
-        action: 'allow'
+- name: Allow logs from LAN to SOC
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'logs-LAN'
+    description: 'Allow logs from LAN to SOC'
+    source_zone: ['LAN']
+    destination_zone: ['SOC']
+    source_ip: ['100.10.10.0/24']
+    destination_ip: ['100.10.30.0/24']
+    service: ['splunk_fw']
+    action: 'allow'
 
-    - name: Allow logs from DMZ to SOC
-      panos_security_rule:
-        provider: '{{ provider }}'
-        rule_name: 'logs-DMZ'
-        description: 'Allow logs from DMZ to SOC'
-        source_zone: ['DMZ']
-        destination_zone: ['SOC']
-        source_ip: ['100.10.20.0/24']
-        destination_ip: ['100.10.30.0/24']
-        service: ['splunk_fw']
-        action: 'allow'
+- name: Allow logs from DMZ to SOC
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'logs-DMZ'
+    description: 'Allow logs from DMZ to SOC'
+    source_zone: ['DMZ']
+    destination_zone: ['SOC']
+    source_ip: ['100.10.20.0/24']
+    destination_ip: ['100.10.30.0/24']
+    service: ['splunk_fw']
+    action: 'allow'
 
-    - name: Commit configuration
-      panos_commit_firewall:
-        provider: '{{ provider }}'
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'
