@@ -13,6 +13,14 @@
 - name: Install Universal Forwarder on Windows (Does not wait for install to complete)
   #win_msi, win_package or win_command also exist, however did not function, so opted for win_shell
   win_shell: C:\Users\env-admin\Desktop\splunkforwarder-8.1.1-08187535c166-x64-release.msi WINEVENTLOG_APP_ENABLE=1 WINEVENTLOG_SEC_ENABLE=1 WINEVENTLOG_SYS_ENABLE=1 WINEVENTLOG_FWD_ENABLE=1 WINEVENTLOG_SET_ENABLE=1 ENABLEADMON=1 RECEIVING_INDEXER={{ hostvars.SPLUNK.vm.nics | getUserLayerIP }}:9997 AGREETOLICENSE=yes /quiet
+  when: ansible_hostname != 'WKS2'
+
+- name: Install Universal Forwarder on Windows (Does not wait for install to complete)
+  #win_msi, win_package or win_command also exist, however did not function, so opted for win_shell
+  win_msi:
+    path: C:\Users\env-admin\Desktop\splunkforwarder-8.1.1-08187535c166-x64-release.msi
+    extra_args: WINEVENTLOG_APP_ENABLE=1 WINEVENTLOG_SEC_ENABLE=1 WINEVENTLOG_SYS_ENABLE=1 WINEVENTLOG_FWD_ENABLE=1 WINEVENTLOG_SET_ENABLE=1 ENABLEADMON=1 RECEIVING_INDEXER={{ hostvars.SPLUNK.vm.nics | getUserLayerIP }}:9997 AGREETOLICENSE=yes /quiet
+  when: ansible_hostname == 'WKS2'
 
 - name: Only Proceed When Folder is Present - Folder Needs to be Present to Copy inputs.conf
   win_wait_for:
@@ -26,7 +34,7 @@
 
 - name: Copy Inputs.conf to Win Endpoint
   win_copy:
-    src: 'inputs/WinAD/inputs.conf'
+    src: 'inputs/WinEndPoint/inputs.conf'
     dest: 'C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf'
   when: ansible_hostname != 'WIN_SRV'
 
