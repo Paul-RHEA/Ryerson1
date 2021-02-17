@@ -5,7 +5,7 @@ all:
   children:
     FW:
       hosts:
-        VM-50:
+        VM50:
           provider:
             ip_address: 10.255.0.2
             username: admin
