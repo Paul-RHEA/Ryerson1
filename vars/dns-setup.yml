@@ -83,6 +83,18 @@ dns_zones:
       - name: gophish
         value: "{{ gophish_ip }}"
 
+  - name: citef.int
+    ttl: 604800
+    ns:
+      - name: ns1.citef.int.
+    mx:
+      - name: mail.citef.int.
+    records:
+      - name: ns1
+        value: "{{dns_ip }}"
+      - name: mail
+        value: "{{ mail_ip }}"
+
 # An optional list of acls to allow recursion. ("any" and "none" are always available.)
 dns_allow_recursion:
   - none

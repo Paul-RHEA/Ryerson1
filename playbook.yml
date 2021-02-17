@@ -57,7 +57,7 @@
     configAction: 'configure'
     mail_srv_ip: '{{ hostvars.MODOBOA.ansible_host }}'
     domainsAndAccounts: "{{ hostvars.MODOBOA.vm.configuration.domainsAndAccounts }}"
-    domain: 'mail.modoboa.int'
+    domain: 'mail.citef.int'
     mail_srv_url: 'https://{{ domain }}'
     api_url_base: '{{ mail_srv_url }}/api/v1/'
   roles:
