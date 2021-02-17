@@ -38,8 +38,16 @@
 - name: Configure virtual router
   panos_virtual_router:
     provider: '{{ provider }}'
-    name: 'ROUTER'
+    name: 'router'
     interface: ['ethernet1/1','ethernet1/2','ethernet1/3','ethernet1/4']
+
+- name: Configure default route
+  panos_static_route:
+    provider: '{{ provider }}'
+    name: 'Default route'
+    destination: '0.0.0.0/0'
+    nexthop: '100.100.0.1'
+    virtual_router: 'router'
 
 - name: Configure Empty Management profile
   panos_management_profile:
@@ -98,7 +106,7 @@
     provider: '{{ provider }}'
     if_name: 'ethernet1/3'
     mode: 'layer3'
-    ip: ['10.10.20.1/24']
+    ip: ['100.10.20.1/24']
     enable_dhcp: false
     zone_name: 'DMZ'
     vr_name: 'router'
@@ -109,7 +117,7 @@
     provider: '{{ provider }}'
     if_name: 'ethernet1/4'
     mode: 'layer3'
-    ip: ['10.10.30.1/24']
+    ip: ['100.10.30.1/24']
     enable_dhcp: false
     zone_name: 'SOC'
     vr_name: 'router'
@@ -120,7 +128,7 @@
     provider: '{{ provider }}'
     name: 'splunk_fw'
     description: "Service for Splunk FW (Port 9997)"
-    destination_port: ['9997']
+    destination_port: '9997'
     protocol: 'tcp'
 
 - name: Commit configuration
@@ -136,6 +144,7 @@
     destination_zone: ['EXT']
     source_ip: ['100.10.10.0/24']
     destination_ip: ['any']
+    service: ['any']
     action: 'allow'
 
 - name: Allow Traffic from DMZ to EXT
@@ -147,6 +156,7 @@
     destination_zone: ['EXT']
     source_ip: ['100.10.20.0/24']
     destination_ip: ['any']
+    service: ['any']
     action: 'allow'
 
 - name: Allow Traffic from SOC to any
@@ -158,6 +168,7 @@
     destination_zone: ['any']
     source_ip: ['100.10.30.0/24']
     destination_ip: ['any']
+    service: ['any']
     action: 'allow'
 
 - name: Allow HTTP Traffic from EXT to DMZ
@@ -169,7 +180,7 @@
     destination_zone: ['DMZ']
     source_ip: ['any']
     destination_ip: ['100.10.20.0/24']
-    application: ['general-internet','ssl']
+    service: ['service-http','service-https']
     action: 'allow'
 
 - name: Allow logs from LAN to SOC

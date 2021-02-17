@@ -5,7 +5,7 @@
     timeout:  36000 # 10 hours
     sleep: 5
 
-- name: Gather gather facts
+- name: Gather facts
   setup:
 
 - name: Copy Universal Forwarder Installer to Windows
