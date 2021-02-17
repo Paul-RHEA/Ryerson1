@@ -145,22 +145,22 @@
     - dmz-srv
   tags: dmz
 
-- name: Change WIN_WKS hostame
+- name: Change WKS1 hostame
   #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
-  hosts: WIN_WKS
+  hosts: WKS1
   gather_facts: no
   vars:
-    hostname: 'WIN-WKS'
+    hostname: 'WKS1'
   roles:
     - win-hostname
   tags: [ win-hostname]
 
-- name: Change SCADA_OPERATOR hostname
+- name: Change WKS2 hostname
   #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
-  hosts: SCADA_OPERATOR
+  hosts: WKS2
   gather_facts: no
   vars:
-    hostname: 'SCADA-OPERATOR'
+    hostname: 'WKS2'
   roles:
     - win-hostname
   tags: [ win-hostname]
@@ -180,6 +180,8 @@
   gather_facts: no
   vars_files:
       /etc/ansible/host_vars/vault_vars.yml
+  vars:
+    ansible_become_pass: '{{ become_p }}'
   roles:
     - config-splunk
   tags: [ splunk, splunk-srv ]
@@ -191,6 +193,8 @@
   gather_facts: no
   vars_files:
       /etc/ansible/host_vars/vault_vars.yml
+  vars:
+    ansible_become_pass: '{{ become_p }}'
   roles:
     - linux-splunk-fw
   tags: [ splunk, splunk-fw, splunk-fw-win ]
