@@ -5,6 +5,9 @@
     timeout:  36000 # 10 hours
     sleep: 5
 
+- name: Gather gather facts
+  setup:
+
 - name: Copy Universal Forwarder Installer to Windows
   win_copy:
     src: 'splunkforwarder-8.1.1-08187535c166-x64-release.msi'

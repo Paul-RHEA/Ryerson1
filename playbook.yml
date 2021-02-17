@@ -197,16 +197,14 @@
     ansible_become_pass: '{{ become_p }}'
   roles:
     - linux-splunk-fw
-  tags: [ splunk, splunk-fw, splunk-fw-win ]
+  tags: [ splunk, splunk-fw, splunk-fw-linux ]
 
 - name: Configure Splunk forwarders on Windows
   hosts: WKS1,WKS2,WIN_SRV
-  become: yes
-  become_user: root
   gather_facts: no
   roles:
     - win-splunk-fw
-  tags: [ splunk, splunk-fw, splunk-fw-linux ]
+  tags: [ splunk, splunk-fw, splunk-fw-win ]
 
 - name: Set-up Active Directory forest and domain controller
   #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
