@@ -178,6 +178,8 @@
   become: yes
   become_user: root
   gather_facts: no
+  vars_files:
+      /etc/ansible/host_vars/vault_vars.yml
   roles:
     - config-splunk
   tags: [ splunk, splunk-srv ]
@@ -187,6 +189,8 @@
   become: yes
   become_user: root
   gather_facts: no
+  vars_files:
+      /etc/ansible/host_vars/vault_vars.yml
   roles:
     - linux-splunk-fw
   tags: [ splunk, splunk-fw, splunk-fw-win ]
