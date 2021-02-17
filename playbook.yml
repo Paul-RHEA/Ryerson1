@@ -27,8 +27,8 @@
     gophish_ip: "{{ hostvars.GOPHISH.vm.nics | getUserLayerIP }}"
     mail_ip: "{{ hostvars.MODOBOA.vm.nics | getUserLayerIP }}"
     dns_ip: "{{ hostvars.DNS_SRV.vm.nics | getUserLayerIP }}"
-  tasks:
-    - include_tasks: tasks/config-dns.yml
+  roles:
+    - robertdebock.dns
   tags: config-dns
 
 - name: Configure ssl in Email_Srv
