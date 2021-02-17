@@ -20,15 +20,8 @@
     - CITEF_ROOT_CA.crt
     - CITEF_INTERIM_CA.crt
 
-- name: copy Firefox import script
-  copy:
-    src: "files/cert/linux-cert-install-firefox.sh"
-    dest: "/tmp/linux-cert-install-firefox.sh"
-    owner: "root"
-    group: "root"
-
 - name: Import certificate for Firefox
-  script: files/cert/linux-cert-install-firefox.sh /usr/share/ca-certificates/{{ item }}.crt CITEF_ROOT_CA
+  script: files/certs/linux-cert-install-firefox.sh /usr/share/ca-certificates/{{ item }}.crt CITEF_ROOT_CA
   loop:
     - CITEF_ROOT_CA
     - CITEF_INTERIM_CA
