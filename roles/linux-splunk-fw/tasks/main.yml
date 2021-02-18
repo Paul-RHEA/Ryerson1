@@ -20,9 +20,9 @@
     dest: '/home/env-admin/pexpect'
 
 - name: Install Pexpect Module on Splunk Server
-  command: pip3 install pexpect-4.8.0-py2.py3-none-any.whl --no-index --find-links .
-  args:
-    chdir: /home/env-admin/pexpect/pexpect/
+  pip:
+    name: /home/env-admin/pexpect/pexpect/pexpect-4.8.0-py2.py3-none-any.whl
+    extra_args: '--no-index --find-links home/env-admin/pexpect/pexpect/'
 
 - name: Start Splunk Forwarder on Ubuntu Endpoint
   expect:

@@ -41,14 +41,6 @@
     name: 'router'
     interface: ['ethernet1/1','ethernet1/2','ethernet1/3','ethernet1/4']
 
-- name: Configure default route
-  panos_static_route:
-    provider: '{{ provider }}'
-    name: 'Default route'
-    destination: '0.0.0.0/0'
-    nexthop: '100.100.0.1'
-    virtual_router: 'router'
-
 - name: Configure Empty Management profile
   panos_management_profile:
     provider: '{{ provider }}'
@@ -206,6 +198,14 @@
     destination_ip: ['100.10.30.0/24']
     service: ['splunk_fw']
     action: 'allow'
+
+- name: Configure default route
+  panos_static_route:
+    provider: '{{ provider }}'
+    name: 'Default route'
+    destination: '0.0.0.0/0'
+    nexthop: '100.100.0.1'
+    virtual_router: 'router'
 
 - name: Commit configuration
   panos_commit_firewall:
