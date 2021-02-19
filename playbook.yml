@@ -46,6 +46,7 @@
 
 - name: Configure Email_Srv
   hosts: MODOBOA
+  gather_facts: no
   connection: local
   become: yes
   become_user: root
@@ -66,7 +67,7 @@
 
 - name: Configure Pierre's Email preferences
   hosts: MODOBOA
-  gather_facts: yes
+  gather_facts: no
   become: yes
   become_user: root
   vars_files:
@@ -79,6 +80,7 @@
 
 - name: Configure Gophish
   hosts: GOPHISH
+  gather_facts: no
   connection: local
   become: yes
   become_user: root
@@ -117,6 +119,7 @@
 
 - name: Configure RHEA root CA on Linux
   hosts: CA_LINUX
+  gather_facts: no
   become: yes
   become_user: root
   vars_files:
@@ -129,12 +132,14 @@
 
 - name: Configure RHEA root CA on Windows
   hosts: CA_WIN
+  gather_facts: no
   tasks:
     - include_tasks: tasks/config-ca-windows.yml
   tags: win
 
 - name: Configue DMZ Srv
   hosts: DMZ_SRV
+  gather_facts: no
   become: yes
   become_user: root
   vars_files:
