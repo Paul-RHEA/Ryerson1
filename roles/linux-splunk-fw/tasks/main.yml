@@ -8,21 +8,22 @@
 - name: Copy Splunk Forwarder Installer to Ubuntu Endpoint
   copy:
     src: 'splunkforwarder-8.1.1-08187535c166-linux-2.6-amd64.deb'
-    dest: '/home/env-admin/splunkforwarder-8.1.1-08187535c166-linux-2.6-amd64.deb'
+    dest: '/tmp/splunkforwarder-8.1.1-08187535c166-linux-2.6-amd64.deb'
 
 - name: Run Splunk Forwarder Installer on Ubuntu Endpoint
-  command: dpkg -i splunkforwarder-8.1.1-08187535c166-linux-2.6-amd64.deb
+  apt:
+    deb: /tmp/splunkforwarder-8.1.1-08187535c166-linux-2.6-amd64.deb
 
 
 - name: Need to copy over Pexpect Python Module for Ansible Expect to be supported
   copy:
     src: 'pexpect'
-    dest: '/home/env-admin/pexpect'
+    dest: '/tmp/'
 
 - name: Install Pexpect Module on Splunk Server
   pip:
-    name: /home/env-admin/pexpect/pexpect/pexpect-4.8.0-py2.py3-none-any.whl
-    extra_args: '--no-index --find-links home/env-admin/pexpect/pexpect/'
+    name: /tmp/pexpect/pexpect-4.8.0-py2.py3-none-any.whl
+    extra_args: '--no-index --find-links /tmp/pexpect/'
 
 - name: Start Splunk Forwarder on Ubuntu Endpoint
   expect:
@@ -38,9 +39,17 @@
     responses:
       Splunk username: env-admin
       Password: admin-env
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"forwarded-server already present" not in result.stdout'
 
 - name: Configure the Universal Forwarder to Send /var/log to Splunk
   command: /opt/splunkforwarder/bin/splunk add monitor /var/log
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"one already exists" not in result.stderr'
 
 - name: Copy Inputs.conf to Ubuntu
   copy:

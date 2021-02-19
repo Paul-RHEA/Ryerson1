@@ -8,20 +8,21 @@
 - name: Copy Splunk Installer to Splunk Server
   copy:
     src: 'splunk-8.1.1-08187535c166-linux-2.6-amd64.deb'
-    dest: '/home/env-admin/splunk-8.1.1-08187535c166-linux-2.6-amd64.deb'
+    dest: '/tmp/splunk-8.1.1-08187535c166-linux-2.6-amd64.deb'
 
 - name: Run Splunk Installer to Install Splunk
-  command: dpkg -i splunk-8.1.1-08187535c166-linux-2.6-amd64.deb
+  apt:
+    deb: /tmp/splunk-8.1.1-08187535c166-linux-2.6-amd64.deb
 
 - name: Need to copy over Pexpect Python Module for Ansible Expect to be supported
   copy:
     src: 'pexpect'
-    dest: '/home/env-admin/pexpect'
+    dest: '/tmp/pexpect'
 
 - name: Install Pexpect Module on Splunk Server
-  command: pip3 install pexpect-4.8.0-py2.py3-none-any.whl --no-index --find-links .
-  args:
-    chdir: /home/env-admin/pexpect/pexpect/
+  pip:
+    name: /tmp/pexpect/pexpect-4.8.0-py2.py3-none-any.whl
+    extra_args: '--no-index --find-links /tmp/pexpect/'
 
 - name: Start Splunk After Install is Complete
   #Use Expect to handle prompts
@@ -31,6 +32,7 @@
       Please enter an administrator username: env-admin
       Please enter a new password: admin-env
       Please confirm new password: admin-env
+      Perform migration and upgrade without previewing configuration changes?: y
 
 - name: Wait Until Port 8000 is UP on Ubuntu Server. Port 8000 is Splunk.
   wait_for:
@@ -38,6 +40,10 @@
 
 - name: Configure Splunk Receiving
   command: /opt/splunk/bin/splunk enable listen 9997 -auth env-admin:admin-env
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stderr'
 
 #Need to enter Splunk Username/Password for first one
 - name: Create Custom Index for Windows Endpoint
@@ -46,12 +52,27 @@
     responses:
       Splunk username: env-admin
       Password: admin-env
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
 
 - name: Create Custom Index for Windows AD
   command: /opt/splunk/bin/splunk add index winservad
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
 
 - name: Create Custom Index for Linux (Ubuntu)
   command: /opt/splunk/bin/splunk add index linuxlogs
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
 
 - name: Upload Dev License File to Splunk Server
   copy:
@@ -62,9 +83,17 @@
   copy:
     src: 'splunk-security-essentials_330.tgz'
     dest: '/home/env-admin/splunk-security-essentials_330.tgz'
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
 
 - name: Install new Add-on on Splunk
   command: /opt/splunk/bin/splunk install app /home/env-admin/splunk-security-essentials_330.tgz -auth env-admin:admin-env
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
 
 - name: Copying RHEA Saved Searches to Splunk
   copy:
@@ -77,6 +106,11 @@
     responses:
       Splunk username: env-admin
       Password: admin-env
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"already has this license" not in result.stdout'
+    - '"already has this license" not in result.stderr'
 
 - name: Splunk Needs to be Restarted for License and other Changes to Take Effect
   command: /opt/splunk/bin/splunk restart
