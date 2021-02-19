@@ -17,7 +17,7 @@
 - name: Need to copy over Pexpect Python Module for Ansible Expect to be supported
   copy:
     src: 'pexpect'
-    dest: '/tmp/pexpect'
+    dest: '/tmp/'
 
 - name: Install Pexpect Module on Splunk Server
   pip:
