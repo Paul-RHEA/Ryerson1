@@ -14,12 +14,10 @@
     dest: C:\Users\env-admin\Desktop\splunkforwarder-8.1.1-08187535c166-x64-release.msi
 
 - name: Install Universal Forwarder on Windows (Does not wait for install to complete)
-  ansible.windows.win_package:
+  win_package:
     path: C:\Users\env-admin\Desktop\splunkforwarder-8.1.1-08187535c166-x64-release.msi
     arguments: "WINEVENTLOG_APP_ENABLE=1 WINEVENTLOG_SEC_ENABLE=1 WINEVENTLOG_SYS_ENABLE=1 WINEVENTLOG_FWD_ENABLE=1 WINEVENTLOG_SET_ENABLE=1 ENABLEADMON=1 RECEIVING_INDEXER={{ hostvars.SPLUNK.vm.nics | getUserLayerIP }}:9997 AGREETOLICENSE=yes /quiet"
     creates_path: 'C:\Program Files\SplunkUniversalForwarder\etc\system\local\'
-  retries: 3
-  delay: 10
 
 - name: Only Proceed When Folder is Present - Folder Needs to be Present to Copy inputs.conf
   win_wait_for:
