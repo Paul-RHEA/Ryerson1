@@ -88,12 +88,63 @@
     - '"already exists" not in result.stdout'
     - '"already exists" not in result.stderr'
 
-- name: Install new Add-on on Splunk
+- name: Install Security Essentials Add-on on Splunk
   command: /opt/splunk/bin/splunk install app /home/env-admin/splunk-security-essentials_330.tgz -auth env-admin:admin-env
   failed_when:
     - result.rc != 0
     - '"already exists" not in result.stdout'
     - '"already exists" not in result.stderr'
+
+
+- name: Upload Palo Alto Add-on to Splunk Server
+  copy:
+    src: 'palo-alto-networks-add-on-for-splunk_650.tgz'
+    dest: '/home/env-admin/palo-alto-networks-add-on-for-splunk_650.tgz'
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
+
+- name: Install Palo Alto Add-on on Splunk
+  command: /opt/splunk/bin/splunk install app /home/env-admin/palo-alto-networks-add-on-for-splunk_650.tgz -auth env-admin:admin-env
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
+
+- name: Upload Palo Alto App to Splunk Server
+  copy:
+    src: 'palo-alto-networks-app-for-splunk_650.tgz'
+    dest: '/home/env-admin/palo-alto-networks-app-for-splunk_650.tgz'
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
+
+- name: Install Palo Alto App on Splunk
+  command: /opt/splunk/bin/splunk install app /home/env-admin/palo-alto-networks-app-for-splunk_650.tgz -auth env-admin:admin-env
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
+
+- name: Create Custom Index for Palo ALto
+  command: /opt/splunk/bin/splunk add index pan_logs
+  register: result
+  failed_when:
+    - result.rc != 0
+    - '"already exists" not in result.stdout'
+    - '"already exists" not in result.stderr'
+
+- name: Configure the Palo Alto input
+  copy:
+    src: 'inputs.conf'
+    dest: '/opt/splunk/etc/apps/Splunk_TA_paloalto/local/inputs.conf'
+
+- name: Configure the Palo Alto data model acceleration
+  copy:
+    src: 'datamodels.conf'
+    dest: '/opt/splunk/etc/apps/SplunkforPaloAltoNetworks/local/datamodels.conf'
 
 - name: Copying RHEA Saved Searches to Splunk
   copy:
