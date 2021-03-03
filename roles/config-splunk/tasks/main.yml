@@ -8,7 +8,7 @@
 - name: Copy Splunk Installer to Splunk Server
   copy:
     src: 'splunk-8.1.1-08187535c166-linux-2.6-amd64.deb'
-    dest: '/tmp/splunk-8.1.1-08187535c166-linux-2.6-amd64.deb'
+    dest: '/tmp/'
 
 - name: Run Splunk Installer to Install Splunk
   apt:
@@ -82,7 +82,7 @@
 - name: Upload Security Essentials Add-on to Splunk Server
   copy:
     src: 'splunk-security-essentials_330.tgz'
-    dest: '/home/env-admin/splunk-security-essentials_330.tgz'
+    dest: '/home/env-admin/'
   failed_when:
     - result.rc != 0
     - '"already exists" not in result.stdout'
@@ -99,7 +99,7 @@
 - name: Upload Palo Alto Add-on to Splunk Server
   copy:
     src: 'palo-alto-networks-add-on-for-splunk_650.tgz'
-    dest: '/home/env-admin/palo-alto-networks-add-on-for-splunk_650.tgz'
+    dest: '/home/env-admin/'
   failed_when:
     - result.rc != 0
     - '"already exists" not in result.stdout'
@@ -115,7 +115,7 @@
 - name: Upload Palo Alto App to Splunk Server
   copy:
     src: 'palo-alto-networks-app-for-splunk_650.tgz'
-    dest: '/home/env-admin/palo-alto-networks-app-for-splunk_650.tgz'
+    dest: '/home/env-admin/'
   failed_when:
     - result.rc != 0
     - '"already exists" not in result.stdout'
@@ -139,17 +139,17 @@
 - name: Configure the Palo Alto input
   copy:
     src: 'inputs.conf'
-    dest: '/opt/splunk/etc/apps/Splunk_TA_paloalto/local/inputs.conf'
+    dest: '/opt/splunk/etc/apps/Splunk_TA_paloalto/local/'
 
 - name: Configure the Palo Alto data model acceleration
   copy:
     src: 'datamodels.conf'
-    dest: '/opt/splunk/etc/apps/SplunkforPaloAltoNetworks/local/datamodels.conf'
+    dest: '/opt/splunk/etc/apps/SplunkforPaloAltoNetworks/local/'
 
 - name: Copying RHEA Saved Searches to Splunk
   copy:
     src: 'savedsearches.conf'
-    dest: '/opt/splunk/etc/apps/search/local/savedsearches.conf'
+    dest: '/opt/splunk/etc/apps/search/local/'
 
 - name: Apply Dev License to Splunk
   expect:
