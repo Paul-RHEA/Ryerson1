@@ -1,0 +1,13 @@
+---
+
+- name: Configure default route
+  panos_static_route:
+    provider: '{{ provider }}'
+    name: 'Default route'
+    destination: '0.0.0.0/0'
+    nexthop: '100.100.0.1'
+    virtual_router: 'router'
+
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'

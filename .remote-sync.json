@@ -6,7 +6,7 @@
   "uploadOnSave": false,
   "useAtomicWrites": false,
   "deleteLocal": false,
-  "hostname": "10.242.0.130",
+  "hostname": "10.242.0.114",
   "target": "/CitefAnsibleFiles/scenarioFiles/RHEA/Ryerson1",
   "ignore": [
     ".remote-sync.json",

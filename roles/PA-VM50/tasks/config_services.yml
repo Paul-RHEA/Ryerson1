@@ -1,0 +1,13 @@
+---
+
+- name: Create service for Splunk FW
+  panos_service_object:
+    provider: '{{ provider }}'
+    name: 'splunk_fw'
+    description: "Service for Splunk FW (Port 9997)"
+    destination_port: '9997'
+    protocol: 'tcp'
+
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'

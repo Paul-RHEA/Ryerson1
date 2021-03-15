@@ -1,0 +1,96 @@
+---
+
+
+- name: Allow Traffic from LAN to EXT
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'LAN-EXT'
+    description: 'Allow Traffic from LAN to EXT'
+    source_zone: ['LAN']
+    destination_zone: ['EXT']
+    source_ip: ['100.10.10.0/24']
+    destination_ip: ['any']
+    service: ['any']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+- name: Allow Traffic from DMZ to EXT
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'DMZ-EXT'
+    description: 'Allow Traffic from DMZ to EXT'
+    source_zone: ['DMZ']
+    destination_zone: ['EXT']
+    source_ip: ['100.10.20.0/24']
+    destination_ip: ['any']
+    service: ['any']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+- name: Allow Traffic from SOC to any
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'SOC-ANY'
+    description: 'Allow Traffic from SOC to any'
+    source_zone: ['SOC']
+    destination_zone: ['any']
+    source_ip: ['100.10.30.0/24']
+    destination_ip: ['any']
+    service: ['any']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+- name: Allow HTTP Traffic from EXT to DMZ
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'EXT-DMZ'
+    description: 'Allow HTTP Traffic from EXT to DMZ'
+    source_zone: ['EXT']
+    destination_zone: ['DMZ']
+    source_ip: ['any']
+    destination_ip: ['100.10.20.0/24']
+    service: ['service-http','service-https']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+- name: Allow logs from LAN to SOC
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'logs-LAN'
+    description: 'Allow logs from LAN to SOC'
+    source_zone: ['LAN']
+    destination_zone: ['SOC']
+    source_ip: ['100.10.10.0/24']
+    destination_ip: ['100.10.30.0/24']
+    service: ['splunk_fw']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+- name: Allow logs from DMZ to SOC
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'logs-DMZ'
+    description: 'Allow logs from DMZ to SOC'
+    source_zone: ['DMZ']
+    destination_zone: ['SOC']
+    source_ip: ['100.10.20.0/24']
+    destination_ip: ['100.10.30.0/24']
+    service: ['splunk_fw']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'

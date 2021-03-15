@@ -1,0 +1,66 @@
+---
+
+- name: External Zone
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'EXT'
+    mode: 'layer3'
+    interface: ['ethernet1/1']
+
+- name: Enterprise LAN
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'LAN'
+    mode: 'layer3'
+    interface: ['ethernet1/2']
+
+- name: DMZ Zone
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'DMZ'
+    mode: 'layer3'
+    interface: ['ethernet1/3']
+
+- name: SOC Zone
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'SOC'
+    mode: 'layer3'
+    interface: ['ethernet1/4']
+
+
+- name: Configure virtual router
+  panos_virtual_router:
+    provider: '{{ provider }}'
+    name: 'router'
+    interface: ['ethernet1/1','ethernet1/2','ethernet1/3','ethernet1/4']
+
+- name: Configure Empty Management profile
+  panos_management_profile:
+    provider: '{{ provider }}'
+    name: 'Empty'
+    http: false
+    http_ocsp: false
+    https: false
+    ping: false
+    response_pages: false
+    snmp: false
+    ssh: false
+    telnet: false
+
+- name: Configure Ping Management profile
+  panos_management_profile:
+    provider: '{{ provider }}'
+    name: 'Ping'
+    ping: true
+
+- name: Configure Ping + HTTP Management profile
+  panos_management_profile:
+    provider: '{{ provider }}'
+    name: 'Ping-HTTP'
+    ping: true
+    http: true
+
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'

@@ -1,0 +1,87 @@
+---
+
+- name: Wait host to come up
+  wait_for_connection:
+    timeout:  36000 # 10 hours
+    sleep: 5
+
+- name: Gather facts
+  setup:
+
+- name: Disable site config
+  shell: a2dissite mySimpleSite.conf
+  ignore_errors: yes
+
+- name: delete site file
+  file:
+    path: /etc/apache2/sites-available/mySimpleSite.conf
+    state: absent
+
+- name: Enable necessary Apache2 modules
+  apache2_module:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - rewrite
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
+
+- name: Clean /var/www/html by removing it
+  file:
+    path: /var/www/html
+    state: absent
+
+- name: Create /var/www/html
+  file:
+    path: /var/www/html
+    state: directory
+
+- name: Unarchive web files to /var/www/html
+  unarchive:
+    src: web/cw_password_awareness_v1.1.tar.gz
+    dest: /var/www/html/
+    owner: env-admin
+    group: env-admin
+    mode: 0777
+
+- name: create site file
+  file:
+    path: /etc/apache2/sites-available/mySimpleSite.conf
+    state: touch
+
+- name: add context
+  blockinfile:
+    path: /etc/apache2/sites-available/mySimpleSite.conf
+    block: |
+      <VirtualHost *:80>
+        #ServerName mySimpleSite.com
+
+        DocumentRoot /var/www/html/cw_password_awareness/web
+        <Directory "/var/www/html/cw_password_awareness/web">
+          Options Indexes FollowSymLinks
+          AllowOverride all
+          Require all granted
+
+          RewriteEngine on
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule . index.php
+          RewriteRule ^index.php/ - [L,R=404]
+        </Directory>
+      </VirtualHost>
+
+- name: Enable site config
+  shell: a2ensite mySimpleSite.conf
+  ignore_errors: yes
+
+- name: Disable 000-default.conf config
+  shell: a2dissite 000-default.conf
+  ignore_errors: yes
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted

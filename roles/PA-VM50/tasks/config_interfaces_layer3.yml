@@ -1,0 +1,49 @@
+---
+
+- name: Configure ethernet 1/1 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/1'
+    mode: 'layer3'
+    ip: ['100.100.0.2/24']
+    enable_dhcp: false
+    zone_name: 'EXT'
+    vr_name: 'router'
+    management_profile: 'Empty'
+
+- name: Configure ethernet 1/2 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/2'
+    mode: 'layer3'
+    ip: ['100.10.10.6/24']
+    enable_dhcp: false
+    zone_name: 'LAN'
+    vr_name: 'router'
+    management_profile: 'Ping'
+
+- name: Configure ethernet 1/3 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/3'
+    mode: 'layer3'
+    ip: ['100.10.20.1/24']
+    enable_dhcp: false
+    zone_name: 'DMZ'
+    vr_name: 'router'
+    management_profile: 'Empty'
+
+- name: Configure ethernet 1/4 interface
+  panos_interface:
+    provider: '{{ provider }}'
+    if_name: 'ethernet1/4'
+    mode: 'layer3'
+    ip: ['100.10.30.1/24']
+    enable_dhcp: false
+    zone_name: 'SOC'
+    vr_name: 'router'
+    management_profile: 'Ping-HTTP'
+
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }
