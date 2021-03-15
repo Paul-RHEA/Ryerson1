@@ -46,4 +46,4 @@
 
 - name: Commit configuration
   panos_commit_firewall:
-    provider: '{{ provider }
+    provider: '{{ provider }}'

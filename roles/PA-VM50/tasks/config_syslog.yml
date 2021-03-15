@@ -35,10 +35,24 @@
     - tunnel
     - auth
 
-- name: Configure route for Syslog service:
-  panos_op:
+- name: Configure route for Syslog service
+  panos_type_cmd:
     provider: '{{ provider }}'
-    cmd: 'set deviceconfig system route service syslog source address 100.10.30.1/24'
+    cmd: 'edit'
+    xpath: |
+      /config/devices/entry[@name='localhost.localdomain']
+      /deviceconfig/system/route
+    element: |
+      <route>
+        <service>
+          <entry name="syslog">
+            <source>
+              <address>100.10.30.1/24</address>
+              <interface>ethernet1/4</interface>
+            </source>
+          </entry>
+        </service>
+      </route>
 
 - name: Commit configuration
   panos_commit_firewall:
