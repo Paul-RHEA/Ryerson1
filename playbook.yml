@@ -114,6 +114,7 @@
       /etc/ansible/host_vars/vault_vars.yml
   vars:
     ansible_become_pass: '{{ become_p }}'
+    user: env-admin
   roles:
     - config-trainee
   tags: trainee

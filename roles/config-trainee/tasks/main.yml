@@ -7,18 +7,18 @@
 
 - name: Create directory Templates
   file:
-    path: /home/student/Templates
+    path: /home/{{ user }}/Templates
     state: directory
-    owner: student
-    group: student
+    owner: {{ user }}
+    group: {{ user }}
     mode: '0755'
 
 - name: copy exploit files
   copy:
     src: "exploit/{{ item }}"
-    dest: "/home/student/Templates/{{ item }}"
-    owner: "student"
-    group: "student"
+    dest: "/home/{{ user }}/Templates/{{ item }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
   loop:
     - emailConfig.ini
     - modo0001L.py
@@ -27,56 +27,56 @@
 - name: copy bash scripts
   copy:
     src: "exploit/{{ item }}"
-    dest: "/home/student/Templates/{{ item }}"
-    owner: "student"
-    group: "student"
+    dest: "/home/{{ user }}/Templates/{{ item }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: "0755"
   loop:
     - runL.sh
     - runP.sh
 
-- name: Create dir "/home/student/Desktop" if not already there
+- name: Create dir "/home/user/Desktop" if not already there
   file:
-    path: "/home/student/Desktop/"
+    path: "/home/{{ user }}/Desktop/"
     state: directory
-    owner: student
-    group: student
+    owner: {{ user }}
+    group: {{ user }}
 
-- name: Create dir "/home/student/Desktop
+- name: Create dir /home/user/Desktop
   file:
-    path: "/home/student/Desktop/"
+    path: "/home/{{ user }}/Desktop/"
     state: directory
-    owner: student
-    group: student
+    owner: {{ user }}
+    group: {{ user }}
 
 - name: copy Webmail shortcut
   copy:
     src: "uservm/Webmail.desktop"
-    dest: "/home/student/Desktop/Webmail.desktop"
-    owner: "student"
-    group: "student"
+    dest: "/home/{{ user }}/Desktop/Webmail.desktop"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: "0777"
 
-- name: Create dir "/home/student/Desktop/passwords
+- name: Create dir /home/user/Desktop/passwords
   file:
-    path: "/home/student/Desktop/passwords/"
+    path: "/home/{{ user }}/Desktop/passwords/"
     state: directory
-    owner: student
-    group: student
+    owner: {{ user }}
+    group: {{ user }}
 
-- name: Create dir "/home/student/Desktop/resolution
+- name: Create dir /home/user/Desktop/resolution
   file:
-    path: "/home/student/Desktop/resolution/"
+    path: "/home/{{ user }}/Desktop/resolution/"
     state: directory
-    owner: student
-    group: student
+    owner: {{ user }}
+    group: {{ user }}
 
 - name: copy password desktop files
   copy:
     src: passwords/{{ item }}
-    dest: /home/student/Desktop/passwords/{{ item }}
-    owner: student
-    group: student
+    dest: /home/{{ user }}/Desktop/passwords/{{ item }}
+    owner: {{ user }}
+    group: {{ user }}
   loop:
     - usernames.txt
     - passwords.txt
@@ -84,13 +84,18 @@
 - name: copy desktop files
   copy:
     src: resolutions/{{ item }}
-    dest: /home/student/Desktop/resolution/{{ item }}
-    owner: student
-    group: student
+    dest: /home/{{ user }}/Desktop/resolution/{{ item }}
+    owner: {{ user }}
+    group: {{ user }}
     mode: '0777'
   loop:
     - resolution1280x768.sh
     - resolution1920x1080.sh
 
-- name: Unarchive and place rockyou.txt to student Desktop
-  shell: gzip -dk < /usr/share/wordlists/rockyou.txt.gz > /home/student/Desktop/passwords/rockyou.txt
+- name: Need to copy wpscan database
+  copy:
+    src: '.wpscan'
+    dest: '/home/{{ user }}/'
+
+- name: Unarchive and place rockyou.txt to user Desktop
+  shell: gzip -dk < /usr/share/wordlists/rockyou.txt.gz > /home/{{ user }}/Desktop/passwords/rockyou.txt
