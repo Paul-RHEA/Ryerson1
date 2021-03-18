@@ -68,6 +68,10 @@ dns_zones:
         value: "{{dns_ip }}"
       - name: mail
         value: "{{ mail_ip }}"
+      - name: intranet
+        value: "{{ wp_ip }}"
+      - name: info
+        value: "{{ wp_ip }}"
 
   - name: attacker.com
     ttl: 604800
