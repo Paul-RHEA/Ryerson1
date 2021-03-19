@@ -9,8 +9,8 @@
   file:
     path: /home/{{ user }}/Templates
     state: directory
-    owner: {{ user }}
-    group: {{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: '0755'
 
 - name: copy exploit files
@@ -39,15 +39,15 @@
   file:
     path: "/home/{{ user }}/Desktop/"
     state: directory
-    owner: {{ user }}
-    group: {{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: Create dir /home/user/Desktop
   file:
     path: "/home/{{ user }}/Desktop/"
     state: directory
-    owner: {{ user }}
-    group: {{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: copy Webmail shortcut
   copy:
@@ -61,22 +61,22 @@
   file:
     path: "/home/{{ user }}/Desktop/passwords/"
     state: directory
-    owner: {{ user }}
-    group: {{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: Create dir /home/user/Desktop/resolution
   file:
     path: "/home/{{ user }}/Desktop/resolution/"
     state: directory
-    owner: {{ user }}
-    group: {{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: copy password desktop files
   copy:
     src: passwords/{{ item }}
     dest: /home/{{ user }}/Desktop/passwords/{{ item }}
-    owner: {{ user }}
-    group: {{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
   loop:
     - usernames.txt
     - passwords.txt
@@ -85,8 +85,8 @@
   copy:
     src: resolutions/{{ item }}
     dest: /home/{{ user }}/Desktop/resolution/{{ item }}
-    owner: {{ user }}
-    group: {{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: '0777'
   loop:
     - resolution1280x768.sh
@@ -94,8 +94,8 @@
 
 - name: Need to copy wpscan database
   copy:
-    src: '.wpscan'
-    dest: '/home/{{ user }}/'
+    src: ".wpscan"
+    dest: "/home/{{ user }}/"
 
 - name: Unarchive and place rockyou.txt to user Desktop
   shell: gzip -dk < /usr/share/wordlists/rockyou.txt.gz > /home/{{ user }}/Desktop/passwords/rockyou.txt
