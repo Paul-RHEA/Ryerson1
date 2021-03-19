@@ -116,7 +116,7 @@ dns_zones:
         value: "{{dns_ip }}"
       - name: mail
         value: "{{ mail_ip }}"
-      - name: www
+      - name: @
         value: "{{ wp_ip }}"
 
 # An optional list of acls to allow recursion. ("any" and "none" are always available.)

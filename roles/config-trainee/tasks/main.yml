@@ -96,6 +96,8 @@
   copy:
     src: ".wpscan"
     dest: "/home/{{ user }}/"
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: Unarchive and place rockyou.txt to user Desktop
   shell: gzip -dk < /usr/share/wordlists/rockyou.txt.gz > /home/{{ user }}/Desktop/passwords/rockyou.txt
