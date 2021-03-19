@@ -28,6 +28,7 @@
     mail_ip: "{{ hostvars.MODOBOA.vm.nics | getUserLayerIP }}"
     dns_ip: "{{ hostvars.DNS_SRV.vm.nics | getUserLayerIP }}"
     wp_ip: "{{ hostvars.DMZ_SRV.vm.nics | getUserLayerIP }}"
+    splunk_ip: "{{ hostvars.SPLUNK.vm.nics | getUserLayerIP }}"
   roles:
     - robertdebock.dns
   tags: config-dns

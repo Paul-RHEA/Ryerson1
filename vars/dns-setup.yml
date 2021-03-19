@@ -74,6 +74,8 @@ dns_zones:
         value: "{{ wp_ip }}"
       - name: www
         value: "{{ wp_ip }}"
+      - name: splunk
+        value: {{ splunk_ip }}
 
   - name: attacker.com
     ttl: 604800
