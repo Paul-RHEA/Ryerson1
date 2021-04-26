@@ -1,0 +1,11 @@
+---
+
+
+- name: Change timezone
+  panos_mgtconfig:
+    provider: '{{ provider }}'
+    timezone: 'Canada/Eastern'
+
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'

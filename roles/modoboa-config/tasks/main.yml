@@ -9,6 +9,10 @@
     timeout:  36000 # 10 hours
     sleep: 5
 
+- name: Change Timezone
+  community.general.timezone:
+    name: 'Canada/Eastern'
+
 - name: Prepare ansible controller
   include_tasks: prepare-ansible-controller.yml
 

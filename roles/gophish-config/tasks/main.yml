@@ -1,5 +1,5 @@
 ---
-  
+
 - name: Wait host to come up
   wait_for_connection:
     timeout:  36000 # 10 hours
@@ -7,6 +7,11 @@
 
 - name: Prepare ansible controller
   include_tasks: prepare-ansible-controller.yml
+
+- name: Change Timezone
+  community.general.timezone:
+    name: 'Canada/Eastern'
+
 
 - name: Wait for the Server/API to come online
   uri:

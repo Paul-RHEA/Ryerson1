@@ -8,6 +8,11 @@
 - name: Gather facts
   setup:
 
+- name: Change Timezone
+  community.windows.win_timezone:
+    name: 'Eastern Standard Time'
+
+
 - name: Copy Universal Forwarder Installer to Windows
   win_copy:
     src: 'splunkforwarder-8.1.1-08187535c166-x64-release.msi'
