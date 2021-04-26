@@ -221,3 +221,18 @@
   roles:
     - AD-DC
   tags: [ ad, ad-dc]
+
+- name: Configure timezone on SIFT
+  hosts: ANALYST
+  gather_facts: no
+  become: yes
+  become_user: root
+  vars_files:
+      /etc/ansible/host_vars/vault_vars.yml
+  vars:
+    ansible_become_pass: '{{ become_p }}'
+  tasks:
+    - name: Change Timezone
+      community.general.timezone:
+        name: 'Canada/Eastern'
+  tags: [analyst]
