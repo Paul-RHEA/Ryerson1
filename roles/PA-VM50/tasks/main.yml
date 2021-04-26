@@ -8,3 +8,21 @@
 
 - name: Configure Management
   include_tasks: config_mgt.yml
+
+- name: Configure zones and management for interfaces
+  include_tasks: config_interfaces_zones_mgt.yml
+
+- name: Configure interfaces Layer 3
+  include_tasks: config_interfaces_layer3.yml
+
+- name: Configure routes
+  include_tasks: config_routes.yml
+
+- name: Configure FW Services
+  include_tasks: config_services.yml
+
+- name: Configure Syslog forwarding
+  include_tasks: config_syslog.yml
+
+- name: Configure FW Security policies
+  include_tasks: config_policies.yml
