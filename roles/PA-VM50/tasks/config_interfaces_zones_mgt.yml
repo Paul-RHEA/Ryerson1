@@ -14,10 +14,10 @@
     mode: 'layer3'
     interface: ['ethernet1/2']
 
-- name: DMZ Zone
+- name: IntDMZ Zone
   panos_zone:
     provider: '{{ provider }}'
-    zone: 'DMZ'
+    zone: 'IntDMZ'
     mode: 'layer3'
     interface: ['ethernet1/3']
 
@@ -28,12 +28,18 @@
     mode: 'layer3'
     interface: ['ethernet1/4']
 
+- name: ExtDMZ Zone
+  panos_zone:
+    provider: '{{ provider }}'
+    zone: 'ExtDMZ'
+    mode: 'layer3'
+    interface: ['ethernet1/5']
 
 - name: Configure virtual router
   panos_virtual_router:
     provider: '{{ provider }}'
     name: 'router'
-    interface: ['ethernet1/1','ethernet1/2','ethernet1/3','ethernet1/4']
+    interface: ['ethernet1/1','ethernet1/2','ethernet1/3','ethernet1/4','ethernet1/5']
 
 - name: Configure Empty Management profile
   panos_management_profile:

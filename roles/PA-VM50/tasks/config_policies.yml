@@ -16,14 +16,29 @@
     log_start: true
     log_end: true
 
-- name: Allow Traffic from DMZ to EXT
+- name: Allow Traffic from IntDMZ to EXT
   panos_security_rule:
     provider: '{{ provider }}'
-    rule_name: 'DMZ-EXT'
-    description: 'Allow Traffic from DMZ to EXT'
-    source_zone: ['DMZ']
+    rule_name: 'IntDMZ-EXT'
+    description: 'Allow Traffic from IntDMZ to EXT'
+    source_zone: ['IntDMZ']
     destination_zone: ['EXT']
     source_ip: ['100.10.20.0/24']
+    destination_ip: ['any']
+    service: ['any']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+- name: Allow Traffic from IntDMZ to LAN
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'IntDMZ-LAN'
+    description: 'Allow Traffic from IntDMZ to LAN'
+    source_zone: ['IntDMZ']
+    destination_zone: ['EXT']
+    source_ip: ['100.10.10.0/24']
     destination_ip: ['any']
     service: ['any']
     action: 'allow'
@@ -46,13 +61,13 @@
     log_start: true
     log_end: true
 
-- name: Allow HTTP Traffic from EXT to DMZ
+- name: Allow HTTP Traffic from EXT to IntDMZ
   panos_security_rule:
     provider: '{{ provider }}'
-    rule_name: 'EXT-DMZ'
-    description: 'Allow HTTP Traffic from EXT to DMZ'
+    rule_name: 'EXT-IntDMZ'
+    description: 'Allow HTTP Traffic from EXT to IntDMZ'
     source_zone: ['EXT']
-    destination_zone: ['DMZ']
+    destination_zone: ['IntDMZ']
     source_ip: ['any']
     destination_ip: ['100.10.20.0/24']
     service: ['service-http','service-https']
@@ -76,12 +91,12 @@
     log_start: true
     log_end: true
 
-- name: Allow logs from DMZ to SOC
+- name: Allow logs from IntDMZ to SOC
   panos_security_rule:
     provider: '{{ provider }}'
-    rule_name: 'logs-DMZ'
+    rule_name: 'logs-IntDMZ'
     description: 'Allow logs from DMZ to SOC'
-    source_zone: ['DMZ']
+    source_zone: ['IntDMZ']
     destination_zone: ['SOC']
     source_ip: ['100.10.20.0/24']
     destination_ip: ['100.10.30.0/24']
