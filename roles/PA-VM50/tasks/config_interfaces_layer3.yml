@@ -29,7 +29,7 @@
     mode: 'layer3'
     ip: ['100.10.20.1/24']
     enable_dhcp: false
-    zone_name: 'IntDMZ'
+    zone_name: 'ExtDMZ'
     vr_name: 'router'
     management_profile: 'Empty'
 
@@ -51,7 +51,7 @@
     mode: 'layer3'
     ip: ['100.10.40.1/24']
     enable_dhcp: false
-    zone_name: 'ExtDMZ'
+    zone_name: 'IntDMZ'
     vr_name: 'router'
     management_profile: 'Empty'
 
