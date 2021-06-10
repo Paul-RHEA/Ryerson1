@@ -16,14 +16,14 @@
     log_start: true
     log_end: true
 
-- name: Allow Traffic from IntDMZ to EXT
+- name: Allow Traffic from IntDMZ to LAN
   panos_security_rule:
     provider: '{{ provider }}'
-    rule_name: 'IntDMZ-EXT'
-    description: 'Allow Traffic from IntDMZ to EXT'
+    rule_name: 'IntDMZ-LAN'
+    description: 'Allow Traffic from IntDMZ to LAN'
     source_zone: ['IntDMZ']
-    destination_zone: ['EXT']
-    source_ip: ['100.10.20.0/24']
+    destination_zone: ['LAN']
+    source_ip: ['100.10.40.0/24']
     destination_ip: ['any']
     service: ['any']
     action: 'allow'
@@ -31,14 +31,30 @@
     log_start: true
     log_end: true
 
-- name: Allow Traffic from IntDMZ to LAN
+- name: Allow Traffic from LAN to IntDMZ
   panos_security_rule:
     provider: '{{ provider }}'
-    rule_name: 'IntDMZ-LAN'
-    description: 'Allow Traffic from IntDMZ to LAN'
-    source_zone: ['IntDMZ']
-    destination_zone: ['EXT']
+    rule_name: 'LAN-IntDMZ'
+    description: 'Allow Traffic from LAN to IntDMZ'
+    source_zone: ['LAN']
+    destination_zone: ['IntDMZ']
     source_ip: ['100.10.10.0/24']
+    destination_ip: ['any']
+    service: ['any']
+    action: 'allow'
+    log_setting: 'default'
+    log_start: true
+    log_end: true
+
+
+- name: Allow Traffic from ExtDMZ to EXT
+  panos_security_rule:
+    provider: '{{ provider }}'
+    rule_name: 'ExtDMZ-EXT'
+    description: 'Allow Traffic from ExtDMZ to EXT'
+    source_zone: ['ExtDMZ']
+    destination_zone: ['EXT']
+    source_ip: ['100.10.20.0/24']
     destination_ip: ['any']
     service: ['any']
     action: 'allow'
@@ -61,13 +77,13 @@
     log_start: true
     log_end: true
 
-- name: Allow HTTP Traffic from EXT to IntDMZ
+- name: Allow HTTP Traffic from EXT to ExtDMZ
   panos_security_rule:
     provider: '{{ provider }}'
-    rule_name: 'EXT-IntDMZ'
-    description: 'Allow HTTP Traffic from EXT to IntDMZ'
+    rule_name: 'EXT-ExtDMZ'
+    description: 'Allow HTTP Traffic from EXT to ExtDMZ'
     source_zone: ['EXT']
-    destination_zone: ['IntDMZ']
+    destination_zone: ['ExtDMZ']
     source_ip: ['any']
     destination_ip: ['100.10.20.0/24']
     service: ['service-http','service-https']
