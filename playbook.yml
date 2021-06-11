@@ -29,6 +29,7 @@
     dns_ip: "{{ hostvars.DNS_SRV.vm.nics | getUserLayerIP }}"
     wp_ip: "100.100.0.100"
     splunk_ip: "{{ hostvars.SPLUNK.vm.nics | getUserLayerIP }}"
+    attacker_ip: "{{ hostvars.KALI.vm.nics | getUserLayerIP }}"
   roles:
     - robertdebock.dns
   tags: config-dns
