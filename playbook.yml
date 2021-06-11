@@ -236,3 +236,10 @@
       community.general.timezone:
         name: 'Canada/Eastern'
   tags: [analyst]
+
+- name: Configure Windows Firewall
+  hosts: WKS1,WKS2,WIN_SRV
+  gather_facts: no
+  roles:
+    - win-fw
+  tags: [ win-fw ]
