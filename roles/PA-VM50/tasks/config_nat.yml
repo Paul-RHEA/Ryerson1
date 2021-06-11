@@ -1,0 +1,17 @@
+---
+
+
+- name: Creat One-to-One Destination NAT for Ext DMZ Server
+  panos_nat_rule:
+    provider: '{{ provider }}'
+    rule_name: "Ext DMZ SRV"
+    source_zone: ["EXT"]
+    destination_zone: "EXT"
+    source_ip: ["any"]
+    destination_ip: ["100.100.0.100"]
+    dnat_address: "100.10.20.2"
+
+
+- name: Commit configuration
+  panos_commit_firewall:
+    provider: '{{ provider }}'

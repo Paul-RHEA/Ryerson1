@@ -26,3 +26,6 @@
 
 - name: Configure FW Security policies
   include_tasks: config_policies.yml
+
+- name: Configure NAT
+  include_tasks: config_nat.yml

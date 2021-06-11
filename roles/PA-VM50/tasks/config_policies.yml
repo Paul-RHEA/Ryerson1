@@ -77,7 +77,7 @@
     log_start: true
     log_end: true
 
-- name: Allow HTTP Traffic from EXT to ExtDMZ
+- name: Allow HTTP Traffic from EXT to ExtDMZ via NAT
   panos_security_rule:
     provider: '{{ provider }}'
     rule_name: 'EXT-ExtDMZ'
@@ -85,7 +85,7 @@
     source_zone: ['EXT']
     destination_zone: ['ExtDMZ']
     source_ip: ['any']
-    destination_ip: ['100.10.20.0/24']
+    destination_ip: ['100.100.0.0/24']
     service: ['service-http','service-https']
     action: 'allow'
     log_setting: 'default'
