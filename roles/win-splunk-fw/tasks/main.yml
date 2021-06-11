@@ -10,8 +10,7 @@
 
 - name: Change Timezone
   community.windows.win_timezone:
-    name: 'Eastern Standard Time'
-
+    timezone: 'Eastern Standard Time'
 
 - name: Copy Universal Forwarder Installer to Windows
   win_copy:
