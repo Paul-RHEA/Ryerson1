@@ -215,6 +215,13 @@
     - win-splunk-fw
   tags: [ splunk, splunk-fw, splunk-fw-win ]
 
+- name: Configure Windows Firewall
+  hosts: WKS1,WKS2,WIN_SRV
+  gather_facts: no
+  roles:
+    - win-fw
+  tags: [ win-fw ]
+
 - name: Set-up Active Directory forest and domain controller
   #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
   hosts: WIN_SRV
@@ -237,10 +244,3 @@
       community.general.timezone:
         name: 'Canada/Eastern'
   tags: [analyst]
-
-- name: Configure Windows Firewall
-  hosts: WKS1,WKS2,WIN_SRV
-  gather_facts: no
-  roles:
-    - win-fw
-  tags: [ win-fw ]
