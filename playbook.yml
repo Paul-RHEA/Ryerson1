@@ -165,11 +165,10 @@
   tags: [ win-hostname]
 
 - name: Change WKS2 hostname
-  #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
   hosts: WKS2
   gather_facts: no
   vars:
-    hostname: 'WKS2'
+    hostname: 'webadmin-pc'
   roles:
     - win-hostname
   tags: [ win-hostname]
