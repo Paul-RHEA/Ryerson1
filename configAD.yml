@@ -75,7 +75,7 @@
           - scada_operators
 
 - name: Add Workstations to DC
-  hosts: WIN_WKS,SCADA_OPERATOR
+  hosts: WKS1,WKS2
   gather_facts: no
   roles:
     - AD-registerWKS
