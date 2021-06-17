@@ -103,6 +103,19 @@
           - "Domain Users"
           - "Remote Desktop Users"
 
+    - name: Set Internal DNS Zone for besthostingever.com
+      community.windows.win_dns_zone:
+        name: besthostingever.com
+        type: primary
+        replication: "domain"
+
+    - name: Set www DNS record for besthostingever.com
+      community.windows.win_dns_record:
+        zone: besthostingever.com
+        type: "A"
+        name: "@"
+        value: "100.10.40.2"
+
 - name: Add Workstations to DC
   hosts: WKS1,WKS2
   gather_facts: no

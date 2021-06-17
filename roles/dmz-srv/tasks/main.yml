@@ -5,5 +5,42 @@
     timeout:  36000 # 10 hours
     sleep: 5
 
+- name: Remove old routes
+  ansible.builtin.command:
+    argv: "{{ item.split() }}"
+  loop:
+   - ip route del default
+   - ip route del 100.10.20.0/24
+   - ip route del 100.10.40.0/24
+  ignore_errors: true
+
+- name: Create new Tables
+  blockinfile:
+    path: /etc/iproute2/rt_tables
+    block: |
+      1 Int
+      2 Ext
+
+- name: Set up routing for the 2 new tables
+  ansible.builtin.command:
+    argv: "{{ item.split() }}"
+  loop:
+   - ip route add 100.10.40.0/24 dev ens4 src 100.10.40.2 table Int
+   - ip route add default via 100.10.40.1 table Int
+   - ip route add 100.10.20.0/24 dev ens3 src 100.10.20.2 table Ext
+   - ip route add default via 100.10.20.1 table Ext
+   - ip route add 100.10.40.0/24 dev ens4 src 100.10.40.2
+   - ip route add 100.10.20.0/24 dev ens3 src 100.10.20.2
+   - ip route add default dev ens3
+  ignore_errors: true
+
+- name: Set up routing rules
+  ansible.builtin.command:
+    argv: "{{ item.split() }}"
+  loop:
+   - ip rule add from 100.10.40.2 table Int
+   - ip rule add from 100.10.20.2 table Ext
+  ignore_errors: true
+  
 - name: Gather facts
   setup:

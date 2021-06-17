@@ -53,7 +53,7 @@
     enable_dhcp: false
     zone_name: 'IntDMZ'
     vr_name: 'router'
-    management_profile: 'Empty'
+    management_profile: 'Ping'
 
 - name: Commit configuration
   panos_commit_firewall:
