@@ -5,7 +5,7 @@
     timeout:  36000 # 10 hours
     sleep: 5
 
-- name: Remove old routes
+- name: Remove old routes and add new ones
   ansible.builtin.command:
     argv: "{{ item.split() }}"
   loop:
@@ -41,6 +41,14 @@
    - ip rule add from 100.10.40.2 table Int
    - ip rule add from 100.10.20.2 table Ext
   ignore_errors: true
-  
+
+
+- name: Add new route to LAN
+  ansible.builtin.command:
+    argv: "{{ item.split() }}"
+  loop:
+   - ip route add 100.10.10.0/24 via 100.10.40.1 dev ens4
+
+
 - name: Gather facts
   setup:
