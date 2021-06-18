@@ -8,7 +8,8 @@
 - name: Gather facts
   setup:
 
-- community.windows.win_firewall:
+- name: Disable Windows Firewall
+  community.windows.win_firewall:
     state: disabled
     profiles:
       - Domain

