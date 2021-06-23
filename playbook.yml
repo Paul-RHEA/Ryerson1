@@ -215,7 +215,7 @@
   tags: [ splunk, splunk-fw, splunk-fw-win ]
 
 - name: Configure Windows Firewall
-  hosts: WKS1,WKS2,WIN_SRV
+  hosts: WIN_SRV
   gather_facts: no
   roles:
     - win-fw
