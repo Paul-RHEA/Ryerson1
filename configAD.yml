@@ -82,7 +82,7 @@
         password: '!@Admin!@'
         password_never_expires: yes
         state: present
-        path: ou=Users,dc=myorg,dc=com
+        path: ou=employees,dc=myorg,dc=com
         groups:
           - "Administrators"
           - "Domain Admins"
@@ -98,7 +98,7 @@
         password: 'badm1nt0n!'
         password_never_expires: yes
         state: present
-        path: ou=Users,dc=myorg,dc=com
+        path: ou=employees,dc=myorg,dc=com
         groups:
           - "Domain Users"
           - "Remote Desktop Users"

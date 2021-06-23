@@ -8,7 +8,6 @@
 - name: Gather facts
   setup:
 
-
 - name: Change the hostname
   win_hostname:
     name: 'MyOrgDC'
