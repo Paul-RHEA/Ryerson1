@@ -48,7 +48,7 @@
     argv: "{{ item.split() }}"
   loop:
    - ip route add 100.10.10.0/24 via 100.10.40.1 dev ens4
-
+  ignore_errors: true
 
 - name: Gather facts
   setup:
