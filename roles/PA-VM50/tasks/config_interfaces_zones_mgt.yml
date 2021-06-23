@@ -14,7 +14,7 @@
     mode: 'layer3'
     interface: ['ethernet1/2']
 
-- name: IntDMZ Zone
+- name: ExtDMZ Zone
   panos_zone:
     provider: '{{ provider }}'
     zone: 'ExtDMZ'
@@ -28,7 +28,7 @@
     mode: 'layer3'
     interface: ['ethernet1/4']
 
-- name: ExtDMZ Zone
+- name: IntDMZ Zone
   panos_zone:
     provider: '{{ provider }}'
     zone: 'IntDMZ'
