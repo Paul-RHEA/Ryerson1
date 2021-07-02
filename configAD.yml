@@ -122,3 +122,23 @@
   roles:
     - AD-registerWKS
   tags: [ ad-registerwks ]
+
+- name: Add webadmin to Local Admin group on WKS2
+  hosts: WKS2
+  gather_facts: no
+  tasks:
+
+    - name: Wait host to come up
+      wait_for_connection:
+        timeout:  36000 # 10 hours
+        sleep: 5
+
+    - name: Gather facts
+      setup:
+
+    - name: Add Group membership
+      win_group_membership:
+        name: Administrators
+        members:
+          - MYORG\webadmin
+        state: present
