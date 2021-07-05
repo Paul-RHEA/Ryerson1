@@ -15,8 +15,8 @@ all:
         ansible_connection: winrm
         ansible_password: admin-env
         ansible_winrm_server_cert_validation: ignore
-        ansible_winrm_read_timeout_sec: 120
-        ansible_winrm_operation_timeout_sec: 100
+        ansible_winrm_read_timeout_sec: 200
+        ansible_winrm_operation_timeout_sec: 180
         ansible_become_method: runas
     VyOS:
       vars:
