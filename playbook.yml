@@ -208,7 +208,7 @@
   tags: [ splunk, splunk-fw, splunk-fw-linux ]
 
 - name: Configure Splunk forwarders on Windows
-  hosts: WIN_SRV
+  hosts: WKS1,WKS2,WIN_SRV
   gather_facts: no
   roles:
     - win-splunk-fw
